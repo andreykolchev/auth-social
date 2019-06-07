@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <link href="/static/css/main.css" rel="stylesheet">
+    <title>Crossmarket</title>
+</head>
+<body>
+<div class="container">
+    <div class="registr__header">
+        <div class="registr__logo">
+            <a class="registr__logo-link" href="/">
+                <div class="registr__logo-img">
+                    <img alt="logo" src="/static/img/logo.svg">
+                </div>
+                <div class="registr__logo-name">Crossmarket</div>
+            </a>
+        </div>
+        <div class="registr__info">
+            <div class="registr__info-text">Don't have an account?</div>
+            <div class="registr__info-button">
+                <a class="info-link" th:href="@{/interaction/registration/{operationID}(operationID=${operationID})}">Get
+                    started</a>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="section">
+        <div class="container_login">
+            <div class="registr__title">Sign in to Crossmarket</div>
+            <span class="login_with">Upload your eds:</span>
+            <div class="input_block">
+                <form action="#" class="form" novalidate>
+                    <div class="form__field">
+                        <div class="form__field__title">
+                            <span>eds:</span>
+                        </div>
+                        <div class="eds_key_block">
+                            <input class="input_eds_key" name="name" placeholder="eds key" type="email"/>
+                            <label class="upload_btn" for="upload-eds"><img
+                                    src="img/upload.png"><span>upload files</span></label>
+                            <input class="input_upload" id="upload-eds" type="file">
+                        </div>
+                    </div>
+                    <div class="form__field">
+                        <div class="form__field__title">
+                            <span>Password:</span>
+                        </div>
+                        <div class="input_password">
+                            <input autocomplete="off" id="password" onkeyup="passValid()"
+                                   placeholder="Enter name password"
+                                   type="password"/>
+                            <span class="form__error">this field must be filled</span>
+                            <button class="eye_btn" onclick="show(event)"><img id="EYE" src="img/eye-def.svg"></button>
+                        </div>
+                    </div>
+                    <button class="send_btn" type="submit">Next</button>
+                </form>
+                <a class="signin_link" href="index.html">back to sign in</a>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="js/sign-eds.js"></script>
+</body>
+</html>

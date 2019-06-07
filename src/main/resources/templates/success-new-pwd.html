@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <link href="/static/css/main.css" rel="stylesheet">
+    <title>Crossmarket</title>
+</head>
+<body>
+<div class="container">
+    <div class="registr__header">
+        <div class="registr__logo">
+            <a class="registr__logo-link" href="/">
+                <div class="registr__logo-img">
+                    <img alt="logo" src="/static/img/logo.svg">
+                </div>
+                <div class="registr__logo-name">Crossmarket</div>
+            </a>
+        </div>
+        <div class="registr__info">
+            <div class="registr__info-text">Don't have an account?</div>
+            <div class="registr__info-button">
+                <a class="info-link" th:href="@{/interaction/registration/{operationID}(operationID=${operationID})}">Get
+                    started</a>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="section section_new_pwd">
+        <div class="container_forgot_pwd">
+            <div class="registr__title">Congratulations!</div>
+            <span class="login_with">We send a new password to your email.Pleas chack in.</span>
+            <a class="signin_link" href="/">back to sign in</a>
+        </div>
+    </section>
+</div>
+<script src="/static/js/main.js"></script>
+</body>
+</html>

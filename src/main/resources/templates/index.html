@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <link href="/static/css/main.css" rel="stylesheet">
+    <title>Crossmarket</title>
+</head>
+<body>
+<div class="container">
+    <div class="registr__header">
+        <div class="registr__logo">
+            <a class="registr__logo-link" href="/">
+                <div class="registr__logo-img">
+                    <img alt="logo" src="/static/img/logo.svg">
+                </div>
+                <div class="registr__logo-name">Crossmarket</div>
+            </a>
+        </div>
+        <div class="registr__info">
+            <div class="registr__info-text">Don't have an account?</div>
+            <div class="registr__info-button">
+                <a class="info-link" th:href="@{/interaction/registration/{operationID}(operationID=${operationID})}">Get
+                    started</a>
+            </div>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="container_login">
+            <div class="registr__title">Sign in to Crossmarket</div>
+
+            <span class="login_with">Login with:</span>
+            <div class="login_with_btn_block">
+                <button class="facebook_btn"
+                        th:onclick="@{window.location.href='/oauth2/login/facebook/{operationID}'(operationID=${operationID})}">
+                    <img
+                            src="/static/img/facebook_button.svg"><span>Log in With Facebook</span></button>
+                <button class="google_btn"
+                        th:onclick="@{window.location.href='/oauth2/login/google/{operationID}'(operationID=${operationID})}">
+                    <img
+                            src="/static/img/google+_button.svg"><span>Sign in with Google</span>
+                </button>
+                <!--<a href="/interaction/login/eds">-->
+                <!--<button  class="ecp_btn"><img src="/static/img/eds_button.svg"><span>Log in With eds</span></button>-->
+                <!--</a>-->
+                <button class="ecp_btn"><img src="/static/img/eds_button.svg"><span>EDS soon...</span></button>
+            </div>
+
+            <span class="lines-sides">or</span>
+            <div class="input_block">
+                <form  th:action="@{'/oauth/login/{operationID}'(operationID=${operationID})}" class="form" id="form" method="post">
+<!--                    <input name="uuid" type="hidden" value="<%= details.uuid %>"/>-->
+                    <div class="form__field">
+                        <div class="form__field__title">
+                            <span>Email address:</span>
+                        </div>
+                        <input autocomplete="off" id="email" name="login" onkeyup="emailValid()"
+                               placeholder="email@example.com" type="email"/>
+                        <span class="form__error err"></span>
+                    </div>
+                    <div class="form__field">
+                        <div class="form__field__title">
+                            <span>Password:</span>
+                            <a th:href="@{/interaction/forgot-password/{operationID}(operationID=${operationID})}">Forgot
+                                the password?</a>
+                        </div>
+                        <div class="input_password">
+                            <input autocomplete="off" id="password" name="password" onkeyup="passValid()"
+                                   placeholder="Enter name password" type="password"/>
+                            <span class="form__error err"></span>
+                            <button class="eye_btn" onclick="show(event)">
+                                <img id="pass-eye" src="/static/img/eye-def.svg">
+                            </button>
+                        </div>
+                    </div>
+                    <button class="send_btn" type="submit">Sign in</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="/static/js/authorization.js"></script>
+</body>
+</html>
