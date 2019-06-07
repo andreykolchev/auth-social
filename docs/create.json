@@ -1,0 +1,23 @@
+{
+  "id": "5a60ecf1-32e6-4e50-8fa3-27613b7e4e64",
+  "context": {
+    "language": "ua",
+    "chatID": "8fb0464a-821e-4b70-b046-4a821ecb7049",
+    "personID": "3b301350-2936-11e9-a482-752a43271dda",
+    "chatUsers": [
+      "3b301350-2936-11e9-a482-752a43271dda",
+      "939905e0-336a-11e9-b2f9-bfd978d713ce"
+    ]
+  },
+  "data": {
+    "chatId": "8fb0464a-821e-4b70-b046-4a821ecb7049",
+    "id": "6589eb5c-c8c4-49b1-acf6-2383af180b54",
+    "senderId": "3b301350-2936-11e9-a482-752a43271dda",
+    "createdAt": "2019-06-05T08:12:44Z",
+    "status": "delivered",
+    "contentType": "text",
+    "content": {
+      "text": "aa"
+    }
+  }
+}

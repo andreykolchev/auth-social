@@ -1,0 +1,12 @@
+{
+  "id": "729d023b-b243-4f5d-9d02-3bb243ef5d63",
+  "messageNumber": 1,
+  "targetType": "bpe",
+  "command": "getChat",
+  "context": {
+    "language": "ua",
+    "id": "0ec8b5de-3925-4f66-88b5-de39259f6644",
+    "userId": "isjfbvisjdbv"
+  },
+  "version": "0.0.1"
+}

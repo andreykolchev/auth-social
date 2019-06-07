@@ -1,0 +1,17 @@
+{
+  "id": "729d023b-b243-4f5d-9d02-3bb243ef5d56",
+  "messageNumber": 1,
+  "targetType": "bpe",
+  "command": "createChat",
+  "context": {
+    "language": "ua",
+    "personID": "3b3bac10-2936-11e9-aa4c-bb1f4dc679aa"
+  },
+  "data": {
+    "entity": {
+      "id": "ea9f043a-17f0-4fc0-9f04-3a17f0dfc0b8",
+      "type": "bid"
+    }
+  },
+  "version": "0.0.1"
+}

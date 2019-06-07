@@ -1,0 +1,19 @@
+{
+  "id": "729d023b-b243-4f5d-9d02-3bb243ef5d63",
+  "data": {
+    "id": "0ec8b5de-3925-4f66-88b5-de39259f6644",
+    "users": [
+      "personID",
+      "creatorID"
+    ],
+    "name": "chatName",
+    "description": "chatDescription",
+    "status": "created",
+    "tradeEntity": {
+      "id": "729d023b-b243-4f5d-9d02-3bb243ef5d62",
+      "type": "bid",
+      "creator": "329d023b-b243-4f5d-9d02-3bb243ef5d62"
+    }
+  },
+  "version": "0.0.1"
+}

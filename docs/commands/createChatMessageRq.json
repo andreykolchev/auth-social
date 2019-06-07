@@ -1,0 +1,17 @@
+{
+  "id": "729d023b-b243-4f5d-9d02-3bb243ef5d64",
+  "messageNumber": 1,
+  "targetType": "bpe",
+  "command": "createChatMessage",
+  "context": {
+    "language": "ua",
+    "personID": "75fd6718-1754-45e4-97f4-3f320b7bf7e3"
+  },
+  "data": {
+    "chatId": "cbad4488-6560-4983-ad44-886560c98394",
+    "senderId": "isjfbvisjdbv",
+    "type": "message",
+    "content": "Hello all !!!"
+  },
+  "version": "0.0.1"
+}
