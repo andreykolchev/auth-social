@@ -25,8 +25,7 @@ class Auth2Controller(private val auth2Service: Auth2Service) {
               @PathVariable("operationID") operationID: String,
               req: HttpServletRequest,
               res: HttpServletResponse) {
-        val session = req.session
-        session.setAttribute("operationID", operationID)
+        req.session.setAttribute("operationID", operationID)
         res.sendRedirect(auth2Service.getProviderAuthURL(provider, operationID))
     }
 
@@ -34,9 +33,8 @@ class Auth2Controller(private val auth2Service: Auth2Service) {
     fun callback(@PathVariable("provider") provider: String,
                  req: HttpServletRequest): ResponseEntity<ResponseDto> {
         //get code from provider redirect
-        val session = req.session
-        val operationID = session.getAttribute("operationID").toString()
         val code = req.getParameter("code")
+        val operationID = req.session.getAttribute("operationID").toString()
         return ResponseEntity(auth2Service.processProviderResponse(provider, code, operationID), HttpStatus.OK)
     }
 

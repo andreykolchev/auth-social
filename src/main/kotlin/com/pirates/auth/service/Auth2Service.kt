@@ -26,7 +26,6 @@ class Auth2Service(private val prop: Auth2Properties,
         return when (valueOf(provider)) {
             facebook -> "${prop.facebook.authUri}?client_id=${prop.facebook.clientID}&redirect_uri=${prop.callbackUri}/$provider"
             google -> "${prop.google.authUri}?client_id=${prop.google.clientID}&response_type=code&scope=${prop.google.scope}&redirect_uri=${prop.callbackUri}/$provider"
-
         }
     }
 
