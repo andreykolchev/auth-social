@@ -61,11 +61,17 @@ class Auth2Service(private val prop: Auth2Properties,
                 operationId = operationID
         )
         return if (userRepository.getByProviderId(user.providerId!!) != null) {
-//            processService.loginByProcess(user)
-            processService.loginByRest(user)
+            if (prop.ws) {
+                processService.loginByProcess(user)
+            } else {
+                processService.loginByRest(user)
+            }
         } else {
-//            processService.registrationByProcess(user)
-            processService.registrationByRest(user)
+            if (prop.ws) {
+                processService.registrationByProcess(user)
+            } else {
+                processService.registrationByRest(user)
+            }
         }
     }
 

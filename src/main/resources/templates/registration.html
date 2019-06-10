@@ -51,9 +51,9 @@
             <span class="lines-sides">or sign up with</span>
         </div>
         <div class="registr__form">
-            <form th:action="@{'/oauth/registration/{operationID}'(operationID=${operationID})}" class="form-container" id="form" method="post" name="form">
-<!--                <input name="uuid" type="hidden" value="<%= details.uuid %>"/>-->
-<!--                <input name="type" type="hidden" value="email"/>-->
+            <form class="form-container" id="form" method="post" name="form" th:action="@{'/oauth/registration/{operationID}'(operationID=${operationID})}">
+                <!--                <input name="uuid" type="hidden" value="<%= details.uuid %>"/>-->
+                <!--                <input name="type" type="hidden" value="email"/>-->
                 <div class="form__item">
                     <div class="form__item-label">
                         <label class="require__icon" for="email" title="email">Email address</label>

@@ -89,7 +89,7 @@ class ProcessService(private val userRepository: UserRepository,
                 data = toJsonNode(user),
                 version = ApiVersion.V_0_0_1
         )
-        val uDataUrl = "http://bpe:8080/command"
+        val uDataUrl = "http://udata:8080/command"
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
         val uDataRequest = HttpEntity(cm, headers)
@@ -114,7 +114,7 @@ class ProcessService(private val userRepository: UserRepository,
                 data = toJsonNode(registration),
                 version = ApiVersion.V_0_0_1
         )
-        val uDataUrl = "http://bpe:8080/command"
+        val uDataUrl = "http://udata:8080/command"
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
         val uDataRequest = HttpEntity(cm, headers)

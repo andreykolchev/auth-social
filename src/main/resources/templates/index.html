@@ -50,8 +50,8 @@
 
             <span class="lines-sides">or</span>
             <div class="input_block">
-                <form  th:action="@{'/oauth/login/{operationID}'(operationID=${operationID})}" class="form" id="form" method="post">
-<!--                    <input name="uuid" type="hidden" value="<%= details.uuid %>"/>-->
+                <form class="form" id="form" method="post" th:action="@{'/oauth/login/{operationID}'(operationID=${operationID})}">
+                    <!--                    <input name="uuid" type="hidden" value="<%= details.uuid %>"/>-->
                     <div class="form__field">
                         <div class="form__field__title">
                             <span>Email address:</span>

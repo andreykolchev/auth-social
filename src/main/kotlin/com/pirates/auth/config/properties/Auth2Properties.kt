@@ -4,6 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties(prefix = "oauth2")
 data class Auth2Properties(
+        var ws: Boolean = false,
         var facebook: Facebook = Facebook(),
         var google: Google = Google(),
         var callbackUri: String = "",

@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse
 
 
 @Controller
-//@CrossOrigin(maxAge = 3600)
 @RequestMapping("/oauth2")
 class Auth2Controller(private val auth2Service: Auth2Service) {
 
@@ -25,6 +24,7 @@ class Auth2Controller(private val auth2Service: Auth2Service) {
               @PathVariable("operationID") operationID: String,
               req: HttpServletRequest,
               res: HttpServletResponse) {
+        //set operationID to session
         req.session.setAttribute("operationID", operationID)
         res.sendRedirect(auth2Service.getProviderAuthURL(provider, operationID))
     }
@@ -34,6 +34,7 @@ class Auth2Controller(private val auth2Service: Auth2Service) {
                  req: HttpServletRequest): ResponseEntity<ResponseDto> {
         //get code from provider redirect
         val code = req.getParameter("code")
+        //get operationID from session
         val operationID = req.session.getAttribute("operationID").toString()
         return ResponseEntity(auth2Service.processProviderResponse(provider, code, operationID), HttpStatus.OK)
     }
