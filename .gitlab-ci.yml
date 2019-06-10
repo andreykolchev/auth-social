@@ -1,0 +1,15 @@
+image: docker:latest
+
+before_script:
+  - docker login -u atdevops -p OkPWQIuKqo0OTT
+  - apk add curl
+
+stages:
+  - build
+
+build_job:
+  stage: build
+  only:
+    - stage
+  script:
+    - sh ci-stage-build.sh
