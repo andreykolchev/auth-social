@@ -9,10 +9,12 @@ class AuthService(private val processService: ProcessService
 
 ) {
     fun login(login: AuthUser): ResponseDto {
+        //          return processService.loginByProcess(user)
         return processService.loginByRest(login)
     }
 
     fun registration(registration: AuthUser): ResponseDto {
+//            return processService.registrationByProcess(user)
         return processService.registrationByRest(registration)
     }
 

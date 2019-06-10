@@ -24,7 +24,7 @@ class CommandWorker(
 
     init {
         zeebeClient.newWorker()
-                .jobType("ChatDataCommand")
+                .jobType("AuthCommand")
                 .handler(execution())
                 .timeout(Duration.ofSeconds(10))
                 .open()
