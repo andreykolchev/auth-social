@@ -24,17 +24,18 @@ class Auth2Service(private val prop: Auth2Properties,
     fun getProviderAuthURL(provider: String, operationID: String): String {
         checkOperationID(operationID)
         return when (valueOf(provider)) {
-            facebook -> "${prop.facebook.authUri}?client_id=${prop.facebook.clientID}&redirect_uri=${prop.callbackUri}/$provider/$operationID"
-            google -> "${prop.google.authUri}?client_id=${prop.google.clientID}&response_type=code&scope=${prop.google.scope}&redirect_uri=${prop.callbackUri}/$provider/$operationID"
+            facebook -> "${prop.facebook.authUri}?client_id=${prop.facebook.clientID}&redirect_uri=${prop.callbackUri}/$provider?operationID=$operationID"
+            google -> "${prop.google.authUri}?client_id=${prop.google.clientID}&response_type=code&scope=${prop.google.scope}&redirect_uri=${prop.callbackUri}/$provider?operationID=$operationID"
+
         }
     }
 
     fun processProviderResponse(provider: String, code: String, operationID: String): ResponseDto {
-//        checkOperationID(operationID)
+        checkOperationID(operationID)
         val userData: JsonNode?
         when (valueOf(provider)) {
             facebook -> {
-                val tokenURL = "${prop.facebook.tokenUri}?client_id=${prop.facebook.clientID}&client_secret=${prop.facebook.clientSecret}&redirect_uri=${prop.callbackUri}/$provider/$operationID&code=$code"
+                val tokenURL = "${prop.facebook.tokenUri}?client_id=${prop.facebook.clientID}&client_secret=${prop.facebook.clientSecret}&redirect_uri=${prop.callbackUri}/$provider?operationID=$operationID&code=$code"
                 val tokenResponse = restTemplate.getForEntity(tokenURL, JsonNode::class.java)
                 val token = tokenResponse.body?.get("access_token")?.asText()
                 val userUrl = "${prop.facebook.userInfoUri}&access_token=$token"
@@ -45,7 +46,7 @@ class Auth2Service(private val prop: Auth2Properties,
                 val tokenURL = prop.google.tokenUri
                 val headers = HttpHeaders()
                 headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
-                val tokenRequest = HttpEntity("code=$code&client_id=${prop.google.clientID}&client_secret=${prop.google.clientSecret}&grant_type=authorization_code&redirect_uri=${prop.callbackUri}/$provider/$operationID", headers)
+                val tokenRequest = HttpEntity("code=$code&client_id=${prop.google.clientID}&client_secret=${prop.google.clientSecret}&grant_type=authorization_code&redirect_uri=${prop.callbackUri}/$provider?operationID=$operationID", headers)
                 val tokenResponse = restTemplate.postForEntity(tokenURL, tokenRequest, JsonNode::class.java)
                 val token = tokenResponse.body?.get("access_token")?.asText()
                 val userUrl = "${prop.google.userInfoUri}&access_token=$token"
