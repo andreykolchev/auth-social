@@ -34,11 +34,11 @@ class ProcessService(private val userRepository: UserRepository,
         val user = AuthUser(
                 operationId = login.operationId,
                 personId = UUID.fromString(userEntity.personId),
-                provider = userEntity.provider,
-                providerId = userEntity.providerId,
-                email = userEntity.email!!,
-                password = userEntity.hashedPassword,
-                name = userEntity.name
+                provider = login.provider,
+                providerId = login.providerId,
+                email = login.email,
+                hashedPassword = userEntity.hashedPassword,
+                name = login.name
         )
         val cm = CommandMessage(
                 id = login.operationId,
@@ -52,15 +52,20 @@ class ProcessService(private val userRepository: UserRepository,
     }
 
     fun registrationByProcess(registration: AuthUser): ResponseDto {
-        if (registration.provider == "auth") {
-            val hashPassword = registration.password?.hashPassword()
-            registration.password = hashPassword
-        }
+        val hashedPassword = if (registration.provider == "auth")  registration.password?.hashPassword() else null
+        val user = AuthUser(
+                operationId = registration.operationId,
+                provider = registration.provider,
+                providerId = registration.providerId,
+                email = registration.email,
+                hashedPassword = hashedPassword,
+                name = registration.name
+        )
         val cm = CommandMessage(
                 id = registration.operationId,
                 command = CommandType.REGISTRATION,
                 context = toJsonNode(""),
-                data = toJsonNode(registration),
+                data = toJsonNode(user),
                 version = ApiVersion.V_0_0_1
         )
         commandWorker.startZeebeProcess(cm)
@@ -76,11 +81,11 @@ class ProcessService(private val userRepository: UserRepository,
         val user = AuthUser(
                 operationId = login.operationId,
                 personId = UUID.fromString(userEntity.personId),
-                provider = userEntity.provider,
-                providerId = userEntity.providerId,
-                email = userEntity.email!!,
-                password = userEntity.hashedPassword,
-                name = userEntity.name
+                provider = login.provider,
+                providerId = login.providerId,
+                email = login.email,
+                hashedPassword = userEntity.hashedPassword,
+                name = login.name
         )
         val cm = CommandMessage(
                 id = login.operationId,
@@ -103,15 +108,20 @@ class ProcessService(private val userRepository: UserRepository,
 
     fun registrationByRest(registration: AuthUser): ResponseDto {
         //check email and get personId from u-data
-        if (registration.provider == "auth") {
-            val hashPassword = registration.password?.hashPassword()
-            registration.password = hashPassword
-        }
+        val hashedPassword = if (registration.provider == "auth")  registration.password?.hashPassword() else null
+        val user = AuthUser(
+                operationId = registration.operationId,
+                provider = registration.provider,
+                providerId = registration.providerId,
+                email = registration.email,
+                hashedPassword = hashedPassword,
+                name = registration.name
+        )
         val cm = CommandMessage(
                 id = UUID.randomUUID().toString(),
                 command = CommandType.REGISTRATION,
                 context = toJsonNode(""),
-                data = toJsonNode(registration),
+                data = toJsonNode(user),
                 version = ApiVersion.V_0_0_1
         )
         val uDataUrl = "http://udata:8080/command"
@@ -121,15 +131,15 @@ class ProcessService(private val userRepository: UserRepository,
         val uDataResponse = restTemplate.postForEntity(uDataUrl, uDataRequest, ResponseDto::class.java)
         val responseBody = uDataResponse.body ?: throw ErrorException(ErrorType.INVALID_DATA)
         if (responseBody.errors != null) return ResponseDto(id = registration.operationId, errors = responseBody.errors)
-        val user = toObject(AuthUser::class.java, toJsonNode(responseBody.data!!))
+        val userResponse = toObject(AuthUser::class.java, toJsonNode(responseBody.data!!))
         val userEntity = UserEntity(
-                providerId = user.providerId,
-                personId = user.personId!!.toString(),
-                provider = user.provider,
-                name = user.name,
-                email = user.email,
+                providerId = userResponse.providerId,
+                personId = userResponse.personId!!.toString(),
+                provider = userResponse.provider,
+                name = userResponse.name,
+                email = userResponse.email,
                 status = UserStatus.created.toString(),
-                hashedPassword = registration.password)
+                hashedPassword = userResponse.hashedPassword)
         userRepository.save(userEntity)
         val token = tokenService.getTokenByUserCredentials(userEntity)
         return ResponseDto(id = registration.operationId, data = token)

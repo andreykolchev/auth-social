@@ -25,7 +25,7 @@ class UserService(private val userRepository: UserRepository,
                 personId = user.personId.toString(),
                 provider = user.provider,
                 name = user.name,
-                hashedPassword = user.password,
+                hashedPassword = user.hashedPassword,
                 email = user.email,
                 status = UserStatus.created.toString())
 
@@ -37,7 +37,7 @@ class UserService(private val userRepository: UserRepository,
     fun createToken(cm: CommandMessage): ResponseDto {
         val user = toObject(AuthUser::class.java, cm.data)
         val userEntity = userRepository.getByProviderId(user.providerId!!) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
-        if (userEntity.hashedPassword?.equals(user.password) != true) throw ErrorException(ErrorType.INVALID_PASSWORD)
+        if (userEntity.hashedPassword?.equals(user.hashedPassword) != true) throw ErrorException(ErrorType.INVALID_PASSWORD)
         val token = tokenService.getTokenByUserCredentials(userEntity)
         return ResponseDto(id = cm.id, data = token)
     }
