@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.pirates.auth.config.properties.Auth2Properties
 import com.pirates.auth.model.AuthProvider.*
 import com.pirates.auth.model.AuthUser
-import com.pirates.auth.repository.UserRepository
 import com.pirates.chat.model.bpe.ResponseDto
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.http.HttpEntity
@@ -18,11 +17,10 @@ import org.springframework.web.client.RestTemplate
 class Auth2Service(private val prop: Auth2Properties,
                    private val restTemplate: RestTemplate,
 //                   private val operationRedisRepository: OperationRedisRepository,
-                   private val userRepository: UserRepository,
-                   private val processService: ProcessService) {
+                   private val authService: AuthService) {
 
     fun getProviderAuthURL(provider: String, operationID: String): String {
-        checkOperationID(operationID)
+//        checkOperationID(operationID)
         return when (valueOf(provider)) {
             facebook -> "${prop.facebook.authUri}?client_id=${prop.facebook.clientID}&redirect_uri=${prop.callbackUri}/$provider"
             google -> "${prop.google.authUri}?client_id=${prop.google.clientID}&response_type=code&scope=${prop.google.scope}&redirect_uri=${prop.callbackUri}/$provider"
@@ -30,7 +28,7 @@ class Auth2Service(private val prop: Auth2Properties,
     }
 
     fun processProviderResponse(provider: String, code: String, operationID: String): ResponseDto {
-        checkOperationID(operationID)
+//        checkOperationID(operationID)
         val userData: JsonNode?
         when (valueOf(provider)) {
             facebook -> {
@@ -53,29 +51,10 @@ class Auth2Service(private val prop: Auth2Properties,
                 userData = userResponse.body!!
             }
         }
-        val user = AuthUser(
-                provider = provider,
-                providerId = userData["id"]!!.asText(),
-                email = userData["email"]!!.asText(),
-                name = userData["name"]!!.asText(),
-                operationId = operationID
-        )
-        return if (userRepository.getByProviderId(user.providerId!!) != null) {
-            if (prop.ws) {
-                processService.loginByProcess(user)
-            } else {
-                processService.loginByRest(user)
-            }
-        } else {
-            if (prop.ws) {
-                processService.registrationByProcess(user)
-            } else {
-                processService.registrationByRest(user)
-            }
-        }
+        return authService.processUserData(userData = userData, provider = provider, operationID = operationID)
     }
 
-    private fun checkOperationID(operationID: String) {
+//    private fun checkOperationID(operationID: String) {
 //        if (!operationRedisRepository.findById(operationID).isPresent) throw ErrorException(ErrorType.INVALID_OPERATION_ID)
-    }
+//    }
 }
