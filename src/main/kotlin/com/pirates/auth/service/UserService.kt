@@ -19,13 +19,14 @@ class UserService(private val userRepository: UserRepository,
 ) {
 
     fun create(cm: CommandMessage): ResponseDto {
-        val dto = toObject(AuthUser::class.java, cm.data)
+        val user = toObject(AuthUser::class.java, cm.data)
         val userEntity = UserEntity(
-                providerId = dto.providerId,
-                personId = dto.personId.toString(),
-                provider = dto.provider,
-                name = dto.name,
-                email = dto.email,
+                providerId = user.providerId,
+                personId = user.personId.toString(),
+                provider = user.provider,
+                name = user.name,
+                hashedPassword = user.password,
+                email = user.email,
                 status = UserStatus.created.toString())
 
         userRepository.save(userEntity)
