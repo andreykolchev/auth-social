@@ -36,8 +36,7 @@ class Auth2Controller(private val auth2Service: Auth2Service) {
     @GetMapping("/callback/{provider}")
     fun callback(@PathVariable("provider") provider: String,
                  @RequestParam("operationID") operationID: String,
-                 req: HttpServletRequest,
-                 res: HttpServletResponse): ResponseEntity<ResponseDto> {
+                 req: HttpServletRequest): ResponseEntity<ResponseDto> {
         //get code from provider redirect
 //        val session = req.session
 //        val operationID = session.getAttribute("operationID").toString()
