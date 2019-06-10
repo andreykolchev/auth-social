@@ -25,4 +25,4 @@ COPY --from=0 /app/src/main/scripts/artifact_runner.sh /maven
 
 EXPOSE 8080
 
-CMD sh artifact_runner.sh auth-social-1.1.1.jar
+CMD sh artifact_runner.sh auth-1.1.1.jar
