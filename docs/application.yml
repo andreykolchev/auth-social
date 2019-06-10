@@ -28,7 +28,7 @@ oauth2:
   google:
     clientId: 678704667422-30a6u2impk6ncaktmb1g7dedl9dtrcn9.apps.googleusercontent.com
     clientSecret: VhxQW4AE4eWRJc7jRBEg_TZQ
-    authUri: https://accounts.google.com/o/oauth2/v2/auth
+    authUri: https://accounts.google.com/oauth2/v2/auth
     tokenUri: https://www.googleapis.com/oauth2/v4/token
     userInfoUri: https://www.googleapis.com/userinfo/v2/me?fields=id,name,email
     scope: https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile
