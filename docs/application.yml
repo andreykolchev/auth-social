@@ -19,6 +19,7 @@ zeebe:
   broker: 127.0.0.1:26500
 
 oauth2:
+  ws: true
   facebook:
     clientId: 397497430848027
     clientSecret: 021041145fb93a07b233bc75d8c9d3c0

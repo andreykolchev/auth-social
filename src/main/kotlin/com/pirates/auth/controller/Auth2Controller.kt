@@ -13,47 +13,33 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import com.sun.corba.se.spi.presentation.rmi.StubAdapter.request
 
 
 
 
 @Controller
-//@CrossOrigin(maxAge = 3600)
 @RequestMapping("/oauth2")
 class Auth2Controller(private val auth2Service: Auth2Service) {
 
     @GetMapping("/login/{provider}/{operationID}")
     fun login(@PathVariable("provider") provider: String,
-              @PathVariable(name = "operationID") operationID: String,
+              @PathVariable("operationID") operationID: String,
               req: HttpServletRequest,
               res: HttpServletResponse) {
-//        val session = req.session
-//        session.setAttribute("operationID", operationID)
+        //set operationID to session
+        req.session.setAttribute("operationID", operationID)
         res.sendRedirect(auth2Service.getProviderAuthURL(provider, operationID))
     }
 
     @GetMapping("/callback/{provider}")
     fun callback(@PathVariable("provider") provider: String,
-                 @RequestParam("operationID") operationID: String,
                  req: HttpServletRequest): ResponseEntity<ResponseDto> {
         //get code from provider redirect
-//        val session = req.session
-//        val operationID = session.getAttribute("operationID").toString()
         val code = req.getParameter("code")
+        //get operationID from session
+        val operationID = req.session.getAttribute("operationID").toString()
         return ResponseEntity(auth2Service.processProviderResponse(provider, code, operationID), HttpStatus.OK)
     }
-
-
-//    @GetMapping("/callback/{provider}/{operationID}")
-//    fun callback(@PathVariable("provider") provider: String,
-//                 @PathVariable(name = "operationID") operationID: String,
-//                 req: HttpServletRequest,
-//                 res: HttpServletResponse): ResponseEntity<ResponseDto> {
-//        //get code from provider redirect
-//        val code = req.getParameter("code")
-//        return ResponseEntity(auth2Service.processProviderResponse(provider, code, operationID), HttpStatus.OK)
-//    }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
