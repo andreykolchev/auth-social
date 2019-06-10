@@ -18,7 +18,7 @@ import java.time.Duration
 
 @Component
 class CommandWorker(
-        private val zeebeClient: ZeebeClient,
+                    private val zeebeClient: ZeebeClient,
                     private val commandService: CommandService
 ) {
 
