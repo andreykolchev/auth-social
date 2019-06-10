@@ -2,11 +2,8 @@ package com.pirates.auth.service
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.pirates.auth.config.properties.Auth2Properties
-import com.pirates.auth.exception.ErrorException
-import com.pirates.auth.exception.ErrorType
 import com.pirates.auth.model.AuthProvider.*
 import com.pirates.auth.model.AuthUser
-import com.pirates.auth.redisRepository.OperationRedisRepository
 import com.pirates.auth.repository.UserRepository
 import com.pirates.chat.model.bpe.ResponseDto
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -20,7 +17,7 @@ import org.springframework.web.client.RestTemplate
 @EnableConfigurationProperties(Auth2Properties::class)
 class Auth2Service(private val prop: Auth2Properties,
                    private val restTemplate: RestTemplate,
-                   private val operationRedisRepository: OperationRedisRepository,
+//                   private val operationRedisRepository: OperationRedisRepository,
                    private val userRepository: UserRepository,
                    private val processService: ProcessService) {
 
@@ -71,6 +68,6 @@ class Auth2Service(private val prop: Auth2Properties,
     }
 
     private fun checkOperationID(operationID: String) {
-        if (!operationRedisRepository.findById(operationID).isPresent) throw ErrorException(ErrorType.INVALID_OPERATION_ID)
+//        if (!operationRedisRepository.findById(operationID).isPresent) throw ErrorException(ErrorType.INVALID_OPERATION_ID)
     }
 }
