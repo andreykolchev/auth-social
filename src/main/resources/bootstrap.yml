@@ -3,8 +3,8 @@ server:
 
 spring:
   application:
-    name: auth
+    name: auth-social
   cloud:
     config:
       failFast: true
-      name: auth
+      name: auth-social

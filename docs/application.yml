@@ -3,20 +3,21 @@ server:
 
 spring:
   application:
-    name: auth
-#  redis:
-#    host: 0.0.0.0
-#    port: 6379
+    name: auth-social
+  redis:
+    host: websocket_redis
+    port: 6379
 
-cassandra:
-  contact-points: 159.69.65.29
-  keyspace-name: crossmarket
-  port: 7878
-  username: cassandra
-  password: 49hhjddneznwzq14rcke
 
 zeebe:
-  broker: 127.0.0.1:26500
+  broker: zeebe:26500
+
+cassandra:
+  contact-points: 192.168.100.55,192.168.100.54,192.168.100.26
+  keyspace-name: crossmarket
+  port: 9042
+  username: cassandra
+  password: 49hhjddneznwzq14rcke
 
 oauth2:
   facebook:
@@ -52,4 +53,4 @@ jwt:
 logging:
   level:
     root: INFO
-    com.pirates.chat: INFO
+    com.pirates.auth: INFO
