@@ -4,7 +4,7 @@
 
 curl -X POST -H 'Content-Type: application/json' --data '
 {
-"text": "🤘 Начата сборка Stage Auth-Social, следить за ходом сборки можно тут - https://git.cross-market.com/crossmarket/websocket-kotlin/pipelines 🤘"
+"text": "🤘 Начата сборка Stage Auth-Social, следить за ходом сборки можно тут - https://git.cross-market.com/crossmarket/auth-social/pipelines 🤘"
 }
 ' https://chat.tokmaster.com/hooks/wKf7c5siAG26JtsoR/7dNThTFYN3zBN9qGGJ5MdiGoDaA7B2RCmEQnbE4GaeQmopES
 
@@ -12,7 +12,7 @@ curl -X POST -H 'Content-Type: application/json' --data '
 
 ### Start of Telegam Message ###
 
-message="🤘 Начата сборка Stage Auth-Social, следить за ходом сборки можно тут - https://git.cross-market.com/crossmarket/websocket-kotlin/pipelines 🤘"
+message="🤘 Начата сборка Stage Auth-Social, следить за ходом сборки можно тут - https://git.cross-market.com/crossmarket/auth-social/pipelines 🤘"
 apiToken=724494167:AAGb_n0_TLd0sm_9nsA02NL8Bywb8AiFQMc
 chatId=-354180350
 
@@ -35,4 +35,4 @@ TAG="${1:-stage}"
 docker build --no-cache --rm -t "${IMAGE}:${TAG}" .
 docker push "${IMAGE}:${TAG}"
 
-curl https://hooks.stage2.cross-market.com/websocketktupdate
+curl https://hooks.stage2.cross-market.com/auth-socialupdate
