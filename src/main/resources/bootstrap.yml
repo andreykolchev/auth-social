@@ -1,6 +1,3 @@
-server:
-  port: @project.service.port@
-
 spring:
   application:
     name: auth-social
