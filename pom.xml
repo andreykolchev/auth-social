@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.pirates</groupId>
+    <groupId>com.pirates.auth</groupId>
     <artifactId>auth</artifactId>
     <version>1.1.1</version>
     <name>auth</name>
@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.3.RELEASE</version>
+        <version>2.0.8.RELEASE</version>
         <relativePath/> <!-- lookup parent from redisRepository -->
     </parent>
 
@@ -34,6 +34,7 @@
         <cassandra-driver.version>3.7.1</cassandra-driver.version>
         <!--Zeebe client-->
         <zeebe.version>0.17.0</zeebe.version>
+        <guava.version>24.1.1-jre</guava.version>
         <!--Redis client-->
         <jedis.version>2.9.3</jedis.version>
         <!--Docker-->
@@ -105,6 +106,11 @@
             <groupId>io.zeebe</groupId>
             <artifactId>zeebe-client-java</artifactId>
             <version>${zeebe.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
         <!--Kotlin-->
         <dependency>

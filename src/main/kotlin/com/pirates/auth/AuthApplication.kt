@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication(scanBasePackageClasses = [ApplicationConfig::class])
-class BidsApplication
+class AuthApplication
 
 fun main(args: Array<String>) {
-    runApplication<BidsApplication>(*args)
+    runApplication<AuthApplication>(*args)
 }
