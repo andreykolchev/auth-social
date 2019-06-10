@@ -29,17 +29,29 @@ class ProcessService(private val userRepository: UserRepository,
 
 ) {
     fun loginByProcess(login: AuthUser) {
+        val userEntity = userRepository.getByProviderId(login.providerId!!) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
+        if (userEntity.hashedPassword?.equals(login.password?.hashPassword()) != true) throw ErrorException(ErrorType.INVALID_PASSWORD)
+        val user = AuthUser(
+                operationId = login.operationId,
+                personId = UUID.fromString(userEntity.personId),
+                provider = userEntity.provider,
+                providerId = userEntity.providerId,
+                email = userEntity.email!!,
+                password = userEntity.hashedPassword,
+                name = userEntity.name
+        )
         val cm = CommandMessage(
                 id = login.operationId,
                 command = CommandType.LOGIN,
                 context = toJsonNode(""),
-                data = toJsonNode(login),
+                data = toJsonNode(user),
                 version = ApiVersion.V_0_0_1
         )
         commandWorker.startZeebeProcess(cm)
     }
 
     fun registrationByProcess(registration: AuthUser) {
+
         val cm = CommandMessage(
                 id = registration.operationId,
                 command = CommandType.REGISTRATION,
