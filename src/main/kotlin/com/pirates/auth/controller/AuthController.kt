@@ -33,6 +33,8 @@ class AuthController(private val authService: AuthService) {
     @PostMapping("/registration/{operationID}")
     fun registration(@PathVariable(name = "operationID") operationID: String, req: HttpServletRequest): ResponseEntity<ResponseDto> {
         val user = AuthUser(
+                provider = "auth",
+                providerId = req.getParameter("login"),
                 email = req.getParameter("login"),
                 password = req.getParameter("password"),
                 name = (req.getParameter("firstname") + " " + req.getParameter("lastname")).trim(),
