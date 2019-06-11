@@ -16,8 +16,8 @@ class HistoryService(private val historyRepository: HistoryRepository) {
         return historyRepository.getHistory(cm.id.toUUID(), cm.command.value())
     }
 
-    fun saveHistory(input: CommandMessage, output: ResponseDto): HistoryEntity {
-        return historyRepository.saveHistory(
+    fun saveHistory(input: CommandMessage, output: ResponseDto) {
+        historyRepository.saveHistory(
                 HistoryEntity(
                         operationId = input.id.toUUID(),
                         operationDate = timestampNowUTC(),

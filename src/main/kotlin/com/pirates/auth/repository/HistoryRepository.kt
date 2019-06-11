@@ -25,7 +25,7 @@ class HistoryRepository(private val cassandraSession: Session) {
 
     }
 
-    fun saveHistory(entity: HistoryEntity): HistoryEntity {
+    fun saveHistory(entity: HistoryEntity) {
         val insert = insertInto(TABLE)
         insert.value(OPERATION_ID, entity.operationId)
                 .value(COMMAND, entity.command)
@@ -33,7 +33,6 @@ class HistoryRepository(private val cassandraSession: Session) {
                 .value(INPUT_DATA, entity.inputData)
                 .value(OUTPUT_DATA, entity.outputData)
         cassandraSession.execute(insert)
-        return entity
     }
 
 
