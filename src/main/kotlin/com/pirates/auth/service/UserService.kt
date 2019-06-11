@@ -1,5 +1,6 @@
 package com.pirates.auth.service
 
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.exception.ErrorType
 import com.pirates.auth.model.AuthUser
@@ -8,7 +9,6 @@ import com.pirates.auth.model.entity.UserEntity
 import com.pirates.auth.repository.UserRepository
 import com.pirates.chat.model.bpe.CommandMessage
 import com.pirates.chat.model.bpe.ResponseDto
-import com.pirates.chat.utils.hashPassword
 import com.pirates.chat.utils.toObject
 import org.springframework.stereotype.Service
 
@@ -30,15 +30,19 @@ class UserService(private val userRepository: UserRepository,
                 status = UserStatus.created.toString())
 
         userRepository.save(userEntity)
+        val context = cm.context as ObjectNode
+        context.put("personID", userEntity.personId)
         val token = tokenService.getTokenByUserCredentials(userEntity)
-        return ResponseDto(id = cm.id, context = cm.context, data = token)
+        return ResponseDto(id = cm.id, context = context, data = token)
     }
 
     fun createToken(cm: CommandMessage): ResponseDto {
         val user = toObject(AuthUser::class.java, cm.data)
         val userEntity = userRepository.getByProviderId(user.providerId!!) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         if (userEntity.hashedPassword?.equals(user.hashedPassword) != true) throw ErrorException(ErrorType.INVALID_PASSWORD)
+        val context = cm.context as ObjectNode
+        context.put("personID", userEntity.personId)
         val token = tokenService.getTokenByUserCredentials(userEntity)
-        return ResponseDto(id = cm.id, data = token)
+        return ResponseDto(id = cm.id, context = context, data = token)
     }
 }

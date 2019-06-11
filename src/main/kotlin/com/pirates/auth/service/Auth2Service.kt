@@ -2,8 +2,10 @@ package com.pirates.auth.service
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.pirates.auth.config.properties.Auth2Properties
+import com.pirates.auth.exception.ErrorException
+import com.pirates.auth.exception.ErrorType
 import com.pirates.auth.model.AuthProvider.*
-import com.pirates.auth.model.AuthUser
+import com.pirates.auth.repository.OperationRepository
 import com.pirates.chat.model.bpe.ResponseDto
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.http.HttpEntity
@@ -16,11 +18,11 @@ import org.springframework.web.client.RestTemplate
 @EnableConfigurationProperties(Auth2Properties::class)
 class Auth2Service(private val prop: Auth2Properties,
                    private val restTemplate: RestTemplate,
-//                   private val operationRedisRepository: OperationRedisRepository,
+                   private val operationRepository: OperationRepository,
                    private val authService: AuthService) {
 
     fun getProviderAuthURL(provider: String, operationID: String): String {
-//        checkOperationID(operationID)
+        checkOperationID(operationID)
         return when (valueOf(provider)) {
             facebook -> "${prop.facebook.authUri}?client_id=${prop.facebook.clientID}&redirect_uri=${prop.callbackUri}/$provider"
             google -> "${prop.google.authUri}?client_id=${prop.google.clientID}&response_type=code&scope=${prop.google.scope}&redirect_uri=${prop.callbackUri}/$provider"
@@ -28,7 +30,7 @@ class Auth2Service(private val prop: Auth2Properties,
     }
 
     fun processProviderResponse(provider: String, code: String, operationID: String): ResponseDto {
-//        checkOperationID(operationID)
+        checkOperationID(operationID)
         val userData: JsonNode?
         when (valueOf(provider)) {
             facebook -> {
@@ -54,7 +56,7 @@ class Auth2Service(private val prop: Auth2Properties,
         return authService.processUserData(userData = userData, provider = provider, operationID = operationID)
     }
 
-//    private fun checkOperationID(operationID: String) {
-//        if (!operationRedisRepository.findById(operationID).isPresent) throw ErrorException(ErrorType.INVALID_OPERATION_ID)
-//    }
+    private fun checkOperationID(operationID: String) {
+        if (!operationRepository.isOperationIdExists(operationID)) throw ErrorException(ErrorType.INVALID_OPERATION_ID)
+    }
 }
