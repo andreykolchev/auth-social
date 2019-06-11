@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 
-
-
 @Controller
 @RequestMapping("/oauth2")
 class Auth2Controller(private val auth2Service: Auth2Service) {

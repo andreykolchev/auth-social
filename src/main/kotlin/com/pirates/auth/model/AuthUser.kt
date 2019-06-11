@@ -17,6 +17,8 @@ data class AuthUser @JsonCreator constructor(
 
         var password: String? = null,
 
+        var hashedPassword: String? = null,
+
         var name: String? = null,
 
         var personId: UUID? = null
