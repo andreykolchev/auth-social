@@ -4,7 +4,6 @@ import com.datastax.driver.core.Session
 import com.datastax.driver.core.querybuilder.QueryBuilder.*
 import com.pirates.auth.model.entity.HistoryEntity
 import org.springframework.stereotype.Repository
-import org.springframework.stereotype.Service
 import java.util.*
 
 @Repository

@@ -40,7 +40,7 @@ class ProcessService(private val userRepository: UserRepository,
 
     fun login(login: AuthUser): ResponseDto {
         return if (byProcess) {
-           loginByProcess(login)
+            loginByProcess(login)
         } else {
             loginByRest(login)
         }
@@ -78,7 +78,7 @@ class ProcessService(private val userRepository: UserRepository,
     }
 
     private fun registrationByProcess(registration: AuthUser): ResponseDto {
-        val hashedPassword = if (registration.provider == AUTH_PROVIDER)  registration.password?.hashPassword() else null
+        val hashedPassword = if (registration.provider == AUTH_PROVIDER) registration.password?.hashPassword() else null
         val user = AuthUser(
                 operationId = registration.operationId,
                 provider = registration.provider,
@@ -133,7 +133,7 @@ class ProcessService(private val userRepository: UserRepository,
 
     private fun registrationByRest(registration: AuthUser): ResponseDto {
         //check email and get personId from u-data
-        val hashedPassword = if (registration.provider == AUTH_PROVIDER)  registration.password?.hashPassword() else null
+        val hashedPassword = if (registration.provider == AUTH_PROVIDER) registration.password?.hashPassword() else null
         val user = AuthUser(
                 operationId = registration.operationId,
                 provider = registration.provider,

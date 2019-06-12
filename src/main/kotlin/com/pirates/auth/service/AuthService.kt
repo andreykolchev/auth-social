@@ -2,7 +2,6 @@ package com.pirates.auth.service
 
 import com.pirates.auth.config.properties.Auth2Properties
 import com.pirates.auth.model.AuthUser
-import com.pirates.auth.repository.UserRepository
 import com.pirates.chat.model.bpe.ResponseDto
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service
