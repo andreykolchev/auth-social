@@ -2,6 +2,9 @@ package com.pirates.auth.controller
 
 import com.pirates.auth.exception.EnumException
 import com.pirates.auth.exception.ErrorException
+import com.pirates.auth.model.Constants.CODE
+import com.pirates.auth.model.Constants.OPERATION_ID
+import com.pirates.auth.model.Constants.PROVIDER
 import com.pirates.auth.service.Auth2Service
 import com.pirates.chat.model.bpe.ResponseDto
 import com.pirates.chat.model.bpe.getEnumExceptionResponseDto
@@ -19,23 +22,23 @@ import javax.servlet.http.HttpServletResponse
 @RequestMapping("/oauth2")
 class Auth2Controller(private val auth2Service: Auth2Service) {
 
-    @GetMapping("/login/{provider}/{operationID}")
-    fun login(@PathVariable("provider") provider: String,
-              @PathVariable("operationID") operationID: String,
+    @GetMapping("/login/{$PROVIDER}/{$OPERATION_ID}")
+    fun login(@PathVariable(PROVIDER) provider: String,
+              @PathVariable(OPERATION_ID) operationID: String,
               req: HttpServletRequest,
               res: HttpServletResponse) {
         //set operationID to session
-        req.session.setAttribute("operationID", operationID)
+        req.session.setAttribute(OPERATION_ID, operationID)
         res.sendRedirect(auth2Service.getProviderAuthURL(provider, operationID))
     }
 
-    @GetMapping("/callback/{provider}")
-    fun callback(@PathVariable("provider") provider: String,
+    @GetMapping("/callback/{$PROVIDER}")
+    fun callback(@PathVariable(PROVIDER) provider: String,
                  req: HttpServletRequest): ResponseEntity<ResponseDto> {
         //get code from provider redirect
-        val code = req.getParameter("code")
+        val code = req.getParameter(CODE)
         //get operationID from session
-        val operationID = req.session.getAttribute("operationID").toString()
+        val operationID = req.session.getAttribute(OPERATION_ID).toString()
         return ResponseEntity(auth2Service.processProviderResponse(provider, code, operationID), HttpStatus.OK)
     }
 

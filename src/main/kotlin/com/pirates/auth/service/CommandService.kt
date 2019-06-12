@@ -12,18 +12,15 @@ class CommandService(private val historyService: HistoryService,
 
     fun execute(cm: CommandMessage): ResponseDto {
         val historyEntity = historyService.getHistory(cm)
-        var history: ResponseDto? = null
         if (historyEntity != null) {
-            history = toObject(ResponseDto::class.java, historyEntity.outputData)
-        }
-        val response: ResponseDto
-        when (cm.command) {
-            CommandType.REGISTRATION -> {
-                response = history ?: userService.create(cm)
-                history ?: historyService.saveHistory(cm, response)
+            return toObject(ResponseDto::class.java, historyEntity.outputData)
+        } else {
+            val response = when (cm.command) {
+                CommandType.REGISTRATION -> userService.create(cm)
+                CommandType.LOGIN -> userService.createToken(cm)
             }
-            CommandType.LOGIN -> response = userService.createToken(cm)
+            historyService.saveHistory(cm, response)
+            return response
         }
-        return response
     }
 }

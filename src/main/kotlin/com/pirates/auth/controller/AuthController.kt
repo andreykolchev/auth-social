@@ -3,6 +3,12 @@ package com.pirates.auth.controller
 import com.pirates.auth.exception.EnumException
 import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.model.AuthUser
+import com.pirates.auth.model.Constants.AUTH_PROVIDER
+import com.pirates.auth.model.Constants.FIRST_NAME
+import com.pirates.auth.model.Constants.LAST_NAME
+import com.pirates.auth.model.Constants.LOGIN
+import com.pirates.auth.model.Constants.OPERATION_ID
+import com.pirates.auth.model.Constants.PASSWORD
 import com.pirates.auth.service.AuthService
 import com.pirates.chat.model.bpe.ResponseDto
 import com.pirates.chat.model.bpe.getEnumExceptionResponseDto
@@ -18,26 +24,24 @@ import javax.servlet.http.HttpServletRequest
 @RequestMapping("/oauth")
 class AuthController(private val authService: AuthService) {
 
-    @PostMapping("/login/{operationID}")
-    fun login(@PathVariable(name = "operationID") operationID: String, req: HttpServletRequest): ResponseEntity<ResponseDto> {
+    @PostMapping("/login/{$OPERATION_ID}")
+    fun login(@PathVariable(OPERATION_ID) operationID: String, req: HttpServletRequest): ResponseEntity<ResponseDto> {
         val user = AuthUser(
-                provider = "auth",
-                providerId = req.getParameter("login"),
-                email = req.getParameter("login"),
-                password = req.getParameter("password"),
+                provider = AUTH_PROVIDER,
+                providerId = req.getParameter(LOGIN),
+                email = req.getParameter(LOGIN),
+                password = req.getParameter(PASSWORD),
                 operationId = operationID
         )
         return ResponseEntity(authService.login(user), HttpStatus.OK)
     }
 
-    @PostMapping("/registration/{operationID}")
-    fun registration(@PathVariable(name = "operationID") operationID: String, req: HttpServletRequest): ResponseEntity<ResponseDto> {
+    @PostMapping("/registration/{$OPERATION_ID}")
+    fun registration(@PathVariable(OPERATION_ID) operationID: String, req: HttpServletRequest): ResponseEntity<ResponseDto> {
         val user = AuthUser(
-                provider = "auth",
-                providerId = req.getParameter("login"),
-                email = req.getParameter("login"),
-                password = req.getParameter("password"),
-                name = (req.getParameter("firstname") + " " + req.getParameter("lastname")).trim(),
+                email = req.getParameter(LOGIN),
+                password = req.getParameter(PASSWORD),
+                name = (req.getParameter(FIRST_NAME) + " " + req.getParameter(LAST_NAME)).trim(),
                 operationId = operationID
         )
         return ResponseEntity(authService.registration(user), HttpStatus.OK)

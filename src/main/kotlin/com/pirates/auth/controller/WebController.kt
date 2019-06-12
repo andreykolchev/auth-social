@@ -10,27 +10,27 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping("/interaction")
 class WebController {
 
-    @GetMapping("/{operationID}")
-    fun getIndex(@PathVariable(name = "operationID") operationID: String, model: Model): String {
-        model.addAttribute("operationID", operationID)
+    @GetMapping("/{$OPERATION_ID}")
+    fun getIndex(@PathVariable(OPERATION_ID) operationID: String, model: Model): String {
+        model.addAttribute(OPERATION_ID, operationID)
         return "index"
     }
 
-    @GetMapping("/registration/{operationID}")
-    fun getRegistration(@PathVariable(name = "operationID") operationID: String, model: Model): String {
-        model.addAttribute("operationID", operationID)
+    @GetMapping("/registration/{$OPERATION_ID}")
+    fun getRegistration(@PathVariable(OPERATION_ID) operationID: String, model: Model): String {
+        model.addAttribute(OPERATION_ID, operationID)
         return "registration"
     }
 
-    @GetMapping("/forgot-password/{operationID}")
-    fun getForgotPassword(@PathVariable(name = "operationID") operationID: String, model: Model): String {
-        model.addAttribute("operationID", operationID)
+    @GetMapping("/forgot-password/{$OPERATION_ID}")
+    fun getForgotPassword(@PathVariable(OPERATION_ID) operationID: String, model: Model): String {
+        model.addAttribute(OPERATION_ID, operationID)
         return "forgot-password"
     }
 
-    @GetMapping("/success-new-pwd/{operationID}")
-    fun getSuccessNewPwd(@PathVariable(name = "operationID") operationID: String, model: Model): String {
-        model.addAttribute("operationID", operationID)
+    @GetMapping("/success-new-pwd/{$OPERATION_ID}")
+    fun getSuccessNewPwd(@PathVariable(OPERATION_ID) operationID: String, model: Model): String {
+        model.addAttribute(OPERATION_ID, operationID)
         return "success-new-pwd"
     }
 }

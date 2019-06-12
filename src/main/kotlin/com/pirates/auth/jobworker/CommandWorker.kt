@@ -45,8 +45,8 @@ class CommandWorker(
         val cm = toObject(CommandMessage::class.java, toJson(variables))
         try {
             val response = commandService.execute(cm)
-            variables["data"] = response.data
-            variables["context"] = response.context
+            variables[DATA] = response.data
+            variables[CONTEXT] = response.context
             client.newCompleteCommand(job.key).variables(variables).send()
         } catch (ex: ErrorException) {
             processException(getErrorExceptionResponseDto(ex, cm.id), job, variables)
