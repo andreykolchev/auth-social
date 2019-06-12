@@ -18,12 +18,12 @@ class RedisConfig {
     @Value("\${redis.port}")
     private val redisPort: Int = 0
 
-    @Bean
-    fun redissonClient(): RedissonClient {
-        val redissonConfig = org.redisson.config.Config()
-//        redissonConfig.useClusterServers().addNodeAddress("redis://$redisHost:$redisPort")
-        redissonConfig.useSingleServer().setAddress("redis://$redisHost:$redisPort")
-        return Redisson.create(redissonConfig)
-    }
+//    @Bean
+//    fun redissonClient(): RedissonClient {
+//        val redissonConfig = org.redisson.config.Config()
+////        redissonConfig.useClusterServers().addNodeAddress("redis://$redisHost:$redisPort")
+//        redissonConfig.useSingleServer().setAddress("redis://$redisHost:$redisPort")
+//        return Redisson.create(redissonConfig)
+//    }
 
 }

@@ -19,8 +19,11 @@ redis:
   host: 127.0.0.1
   port: 6379
 
+uData:
+  url: http://localhost:8081/command
+  process: false
+
 oauth2:
-  ws: false
   facebook:
     clientId: 397497430848027
     clientSecret: 021041145fb93a07b233bc75d8c9d3c0

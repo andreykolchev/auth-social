@@ -2,6 +2,8 @@ package com.pirates.auth.jobworker
 
 import com.pirates.auth.exception.EnumException
 import com.pirates.auth.exception.ErrorException
+import com.pirates.auth.model.Constants.CONTEXT
+import com.pirates.auth.model.Constants.DATA
 import com.pirates.auth.service.CommandService
 import com.pirates.chat.model.bpe.CommandMessage
 import com.pirates.chat.model.bpe.ResponseDto
@@ -45,8 +47,8 @@ class CommandWorker(
         val cm = toObject(CommandMessage::class.java, toJson(variables))
         try {
             val response = commandService.execute(cm)
-            variables["data"] = response.data
-            variables["context"] = response.context
+            variables[DATA] = response.data
+            variables[CONTEXT] = response.context
             client.newCompleteCommand(job.key).variables(variables).send()
         } catch (ex: ErrorException) {
             processException(getErrorExceptionResponseDto(ex, cm.id), job, variables)

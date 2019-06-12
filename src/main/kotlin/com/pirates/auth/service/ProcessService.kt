@@ -4,6 +4,7 @@ import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.exception.ErrorType
 import com.pirates.auth.jobworker.CommandWorker
 import com.pirates.auth.model.AuthUser
+import com.pirates.auth.model.Constants.AUTH_PROVIDER
 import com.pirates.auth.model.UserStatus
 import com.pirates.auth.model.entity.UserEntity
 import com.pirates.auth.repository.UserRepository
@@ -14,6 +15,7 @@ import com.pirates.chat.model.bpe.ResponseDto
 import com.pirates.chat.utils.hashPassword
 import com.pirates.chat.utils.toJsonNode
 import com.pirates.chat.utils.toObject
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -28,7 +30,31 @@ class ProcessService(private val userRepository: UserRepository,
                      private val commandWorker: CommandWorker
 
 ) {
-    fun loginByProcess(login: AuthUser): ResponseDto {
+
+    @Value("\${uData.url}")
+    private val uDataUrl: String = ""
+
+    @Value("\${uData.process}")
+    private val byProcess: Boolean = false
+
+
+    fun login(login: AuthUser): ResponseDto {
+        return if (byProcess) {
+           loginByProcess(login)
+        } else {
+            loginByRest(login)
+        }
+    }
+
+    fun registration(registration: AuthUser): ResponseDto {
+        return if (byProcess) {
+            registrationByProcess(registration)
+        } else {
+            registrationByRest(registration)
+        }
+    }
+
+    private fun loginByProcess(login: AuthUser): ResponseDto {
         val userEntity = userRepository.getByProviderId(login.providerId!!) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
         if (userEntity.hashedPassword?.equals(login.password?.hashPassword()) != true) throw ErrorException(ErrorType.INVALID_PASSWORD)
         val user = AuthUser(
@@ -51,8 +77,8 @@ class ProcessService(private val userRepository: UserRepository,
         return ResponseDto(id = login.operationId, data = "ok")
     }
 
-    fun registrationByProcess(registration: AuthUser): ResponseDto {
-        val hashedPassword = if (registration.provider == "auth")  registration.password?.hashPassword() else null
+    private fun registrationByProcess(registration: AuthUser): ResponseDto {
+        val hashedPassword = if (registration.provider == AUTH_PROVIDER)  registration.password?.hashPassword() else null
         val user = AuthUser(
                 operationId = registration.operationId,
                 provider = registration.provider,
@@ -72,9 +98,9 @@ class ProcessService(private val userRepository: UserRepository,
         return ResponseDto(id = registration.operationId, data = "ok")
     }
 
-    fun loginByRest(login: AuthUser): ResponseDto {
+    private fun loginByRest(login: AuthUser): ResponseDto {
         val userEntity = userRepository.getByProviderId(login.providerId!!) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
-        if (login.provider == "auth") {
+        if (login.provider == AUTH_PROVIDER) {
             if (userEntity.hashedPassword?.equals(login.password?.hashPassword()) != true) throw ErrorException(ErrorType.INVALID_PASSWORD)
         }
         //check user personID and email in u-data
@@ -94,7 +120,6 @@ class ProcessService(private val userRepository: UserRepository,
                 data = toJsonNode(user),
                 version = ApiVersion.V_0_0_1
         )
-        val uDataUrl = "http://localhost:8081/command"
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
         val uDataRequest = HttpEntity(cm, headers)
@@ -106,9 +131,9 @@ class ProcessService(private val userRepository: UserRepository,
         return ResponseDto(id = login.operationId, data = token)
     }
 
-    fun registrationByRest(registration: AuthUser): ResponseDto {
+    private fun registrationByRest(registration: AuthUser): ResponseDto {
         //check email and get personId from u-data
-        val hashedPassword = if (registration.provider == "auth")  registration.password?.hashPassword() else null
+        val hashedPassword = if (registration.provider == AUTH_PROVIDER)  registration.password?.hashPassword() else null
         val user = AuthUser(
                 operationId = registration.operationId,
                 provider = registration.provider,
@@ -124,7 +149,6 @@ class ProcessService(private val userRepository: UserRepository,
                 data = toJsonNode(user),
                 version = ApiVersion.V_0_0_1
         )
-        val uDataUrl = "http://localhost:8081/command"
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
         val uDataRequest = HttpEntity(cm, headers)
