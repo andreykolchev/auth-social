@@ -21,7 +21,6 @@ class RedisConfig {
     @Bean
     fun redissonClient(): RedissonClient {
         val redissonConfig = org.redisson.config.Config()
-       redissonConfig.useClusterServers().addNodeAddress("redis://$redisHost:$redisPort")
         redissonConfig.useSingleServer().setAddress("redis://$redisHost:$redisPort")
         return Redisson.create(redissonConfig)
     }

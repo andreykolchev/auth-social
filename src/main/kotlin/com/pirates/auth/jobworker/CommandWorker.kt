@@ -20,26 +20,26 @@ import java.time.Duration
 
 @Component
 class CommandWorker(
-//                    private val zeebeClient: ZeebeClient,
+                    private val zeebeClient: ZeebeClient,
                     private val commandService: CommandService
 ) {
 
     init {
-//        zeebeClient.newWorker()
-//                .jobType("ChatDataCommand")
-//                .handler(execution())
-//                .timeout(Duration.ofSeconds(10))
-//                .open()
+        zeebeClient.newWorker()
+                .jobType("ChatDataCommand")
+                .handler(execution())
+                .timeout(Duration.ofSeconds(10))
+                .open()
     }
 
     fun startZeebeProcess(cm: CommandMessage) {
-//        zeebeClient
-//                .newCreateInstanceCommand()
-//                .bpmnProcessId(cm.command.value())
-//                .latestVersion()
-//                .variables(cm)
-//                .send()
-//                .join().workflowInstanceKey
+        zeebeClient
+                .newCreateInstanceCommand()
+                .bpmnProcessId(cm.command.value())
+                .latestVersion()
+                .variables(cm)
+                .send()
+                .join().workflowInstanceKey
     }
 
     private fun execution() = JobHandler { client, job ->
@@ -50,6 +50,7 @@ class CommandWorker(
             variables[DATA] = response.data
             variables[CONTEXT] = response.context
             client.newCompleteCommand(job.key).variables(variables).send()
+            LOG.info(toJson(cm.id))
         } catch (ex: ErrorException) {
             processException(getErrorExceptionResponseDto(ex, cm.id), job, variables)
         } catch (ex: EnumException) {
@@ -58,23 +59,24 @@ class CommandWorker(
     }
 
     private fun processException(response: ResponseDto, job: ActivatedJob, variables: MutableMap<String, Any>) {
-//        zeebeClient.newCreateInstanceCommand()
-//                .bpmnProcessId("error")
-//                .latestVersion()
-//                .variables(response)
-//                .send()
-//                .join()
-//                .run {
-//                    variables["errorsPID"] = this.workflowInstanceKey
-//                    variables["errors"] = response.errors ?: "error"
-//                    zeebeClient.newSetVariablesCommand(job.headers.workflowInstanceKey)
-//                            .variables(variables)
-//                            .send()
-//                            .join()
-//                            .run {
-//                                zeebeClient.newCancelInstanceCommand(job.headers.workflowInstanceKey).send()
-//                            }
-//                }
+        LOG.info(toJson(response.errors))
+        zeebeClient.newCreateInstanceCommand()
+                .bpmnProcessId("error")
+                .latestVersion()
+                .variables(response)
+                .send()
+                .join()
+                .run {
+                    variables["errorsPID"] = this.workflowInstanceKey
+                    variables["errors"] = response.errors ?: "error"
+                    zeebeClient.newSetVariablesCommand(job.headers.workflowInstanceKey)
+                            .variables(variables)
+                            .send()
+                            .join()
+                            .run {
+                                zeebeClient.newCancelInstanceCommand(job.headers.workflowInstanceKey).send()
+                            }
+                }
     }
 
     companion object {
