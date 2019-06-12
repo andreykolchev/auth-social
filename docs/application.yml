@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8083
 
 spring:
   application:
@@ -20,8 +20,8 @@ redis:
   port: 6379
 
 uData:
-  url: http://localhost:8081/command
-  process: false
+  url: http://localhost:8082/command
+  process: true
 
 oauth2:
   facebook:
