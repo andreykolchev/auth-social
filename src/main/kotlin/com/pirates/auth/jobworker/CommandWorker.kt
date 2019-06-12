@@ -20,13 +20,13 @@ import java.time.Duration
 
 @Component
 class CommandWorker(
-                    private val zeebeClient: ZeebeClient,
-                    private val commandService: CommandService
+        private val zeebeClient: ZeebeClient,
+        private val commandService: CommandService
 ) {
 
     init {
         zeebeClient.newWorker()
-                .jobType("ChatDataCommand")
+                .jobType("AuthCommand")
                 .handler(execution())
                 .timeout(Duration.ofSeconds(10))
                 .open()
@@ -50,7 +50,7 @@ class CommandWorker(
             variables[DATA] = response.data
             variables[CONTEXT] = response.context
             client.newCompleteCommand(job.key).variables(variables).send()
-            LOG.info(toJson(cm.id))
+            LOG.info("command: " + cm.command + " id: " + cm.id)
         } catch (ex: ErrorException) {
             processException(getErrorExceptionResponseDto(ex, cm.id), job, variables)
         } catch (ex: EnumException) {

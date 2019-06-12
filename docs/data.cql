@@ -26,9 +26,10 @@ INSERT INTO auth_user (person_id,provider,provider_id,email,status,name,hashedPa
 
 CREATE TABLE IF NOT EXISTS crossmarket.auth_history
 (
-    operation_id UUID,
-    command      text,
-    input_ata    text,
-    output_ata   text,
+    operation_id   uuid,
+    command        text,
+    operation_date timestamp,
+    input_data     text,
+    output_data    text,
     primary key (operation_id, command)
 );
