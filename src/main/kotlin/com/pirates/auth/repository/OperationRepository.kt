@@ -6,14 +6,13 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class OperationRepository(
-//        private val redissonClient: RedissonClient
+        private val redissonClient: RedissonClient
 ) {
 
     fun isOperationIdExists(operationID: String): Boolean {
-//        val key = "${REDIS_AUTH_KEY}_$operationID"
-//        val bucket: RBucket<String> = redissonClient.getBucket<String>(key)
-//        return bucket.get() != null
-        return true
+        val key = "${REDIS_AUTH_KEY}_$operationID"
+        val bucket: RBucket<String> = redissonClient.getBucket<String>(key)
+        return bucket.get() != null
     }
 
     companion object {
