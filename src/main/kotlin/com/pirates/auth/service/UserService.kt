@@ -1,10 +1,7 @@
 package com.pirates.auth.service
 
-import com.pirates.auth.exception.ErrorException
-import com.pirates.auth.exception.ErrorType
 import com.pirates.auth.model.AuthDataRs
 import com.pirates.auth.model.AuthUser
-import com.pirates.auth.model.Constants
 import com.pirates.auth.model.Constants.PERSON_ID
 import com.pirates.auth.model.UserStatus
 import com.pirates.auth.model.entity.UserEntity
@@ -41,10 +38,7 @@ class UserService(private val userRepository: UserRepository,
 
     fun createToken(cm: CommandMessage): ResponseDto {
         val user = toObject(AuthUser::class.java, cm.data)
-        val userEntity = userRepository.getByProviderId(user.providerId!!) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
-        if (user.provider == Constants.AUTH_PROVIDER) {
-            if (userEntity.hashedPassword?.equals(user.hashedPassword) != true) throw ErrorException(ErrorType.INVALID_PASSWORD)
-        }
+        val userEntity = userRepository.getByProviderId(user.providerId!!)!!
         val context = createObjectNode()
         context.put(PERSON_ID, userEntity.personId)
         val dataRs = AuthDataRs(token = tokenService.getTokenByUserCredentials(userEntity))

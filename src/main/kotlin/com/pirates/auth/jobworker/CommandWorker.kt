@@ -1,18 +1,12 @@
 package com.pirates.auth.jobworker
 
-import com.pirates.auth.exception.EnumException
-import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.model.Constants.CONTEXT
 import com.pirates.auth.model.Constants.DATA
 import com.pirates.auth.service.CommandService
 import com.pirates.chat.model.bpe.CommandMessage
-import com.pirates.chat.model.bpe.ResponseDto
-import com.pirates.chat.model.bpe.getEnumExceptionResponseDto
-import com.pirates.chat.model.bpe.getErrorExceptionResponseDto
 import com.pirates.chat.utils.toJson
 import com.pirates.chat.utils.toObject
 import io.zeebe.client.ZeebeClient
-import io.zeebe.client.api.response.ActivatedJob
 import io.zeebe.client.api.subscription.JobHandler
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -45,38 +39,11 @@ class CommandWorker(
     private fun execution() = JobHandler { client, job ->
         val variables = job.variablesAsMap
         val cm = toObject(CommandMessage::class.java, toJson(variables))
-        try {
-            val response = commandService.execute(cm)
-            variables[DATA] = response.data
-            variables[CONTEXT] = response.context
-            client.newCompleteCommand(job.key).variables(variables).send()
-            LOG.info("command: " + cm.command + " id: " + cm.id)
-        } catch (ex: ErrorException) {
-            processException(getErrorExceptionResponseDto(ex, cm.id), job, variables)
-        } catch (ex: EnumException) {
-            processException(getEnumExceptionResponseDto(ex, cm.id), job, variables)
-        }
-    }
-
-    private fun processException(response: ResponseDto, job: ActivatedJob, variables: MutableMap<String, Any>) {
-        LOG.info(toJson(response.errors))
-        zeebeClient.newCreateInstanceCommand()
-                .bpmnProcessId("error")
-                .latestVersion()
-                .variables(response)
-                .send()
-                .join()
-                .run {
-                    variables["errorsPID"] = this.workflowInstanceKey
-                    variables["errors"] = response.errors ?: "error"
-                    zeebeClient.newSetVariablesCommand(job.headers.workflowInstanceKey)
-                            .variables(variables)
-                            .send()
-                            .join()
-                            .run {
-                                zeebeClient.newCancelInstanceCommand(job.headers.workflowInstanceKey).send()
-                            }
-                }
+        val response = commandService.execute(cm)
+        variables[DATA] = response.data
+        variables[CONTEXT] = response.context
+        client.newCompleteCommand(job.key).variables(variables).send()
+        LOG.info("command: " + cm.command + " id: " + cm.id)
     }
 
     companion object {
