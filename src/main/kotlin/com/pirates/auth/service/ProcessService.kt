@@ -56,7 +56,10 @@ class ProcessService(private val userRepository: UserRepository,
 
     private fun loginByProcess(login: AuthUser): ResponseDto {
         val userEntity = userRepository.getByProviderId(login.providerId!!) ?: throw ErrorException(ErrorType.DATA_NOT_FOUND)
-        if (userEntity.hashedPassword?.equals(login.password?.hashPassword()) != true) throw ErrorException(ErrorType.INVALID_PASSWORD)
+        if (login.provider == AUTH_PROVIDER) {
+            if (userEntity.hashedPassword?.equals(login.password?.hashPassword()) != true) throw ErrorException(ErrorType.INVALID_PASSWORD)
+        }
+
         val user = AuthUser(
                 operationId = login.operationId,
                 personId = UUID.fromString(userEntity.personId),
