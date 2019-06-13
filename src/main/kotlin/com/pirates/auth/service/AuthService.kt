@@ -13,12 +13,12 @@ class AuthService(private val processService: ProcessService,
 ) {
 
     fun login(login: AuthUser): ResponseDto {
-        operationService.check(login.operationId)
+//        operationService.check(login.operationId)
         return processService.login(login)
     }
 
     fun registration(registration: AuthUser): ResponseDto {
-        operationService.check(registration.operationId)
+//        operationService.check(registration.operationId)
         return processService.registration(registration)
     }
 }

@@ -21,7 +21,7 @@ redis:
 
 uData:
   url: http://localhost:8082/command
-  process: true
+  process: false
 
 oauth2:
   facebook:
