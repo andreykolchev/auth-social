@@ -2,17 +2,17 @@ package com.pirates.auth.model.entity
 
 data class UserEntity(
 
-        var providerId: String? = null,
+        var providerId: String,
 
-        var personId: String? = null,
+        var personId: String,
 
-        var provider: String? = null,
+        var provider: String,
 
-        var status: String? = null,
+        var status: String,
 
-        var name: String? = null,
+        var name: String,
 
-        var email: String? = null,
+        var email: String,
 
         var hashedPassword: String? = null
 

@@ -61,11 +61,8 @@ class Auth2Service(private val prop: Auth2Properties,
                 email = userData[Constants.EMAIL]!!.asText(),
                 name = userData[Constants.NAME]!!.asText()
         )
-        return if (userRepository.getByProviderId(user.providerId!!) != null) {
-            processService.login(user)
-        } else {
-            processService.registration(user)
-        }
+
+       return  processService.processUserData(user)
     }
 
     companion object {

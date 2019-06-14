@@ -9,17 +9,17 @@ data class AuthUser @JsonCreator constructor(
 
         var operationId: String,
 
-        var provider: String? = null,
+        var provider: String,
 
-        var providerId: String? = null,
+        var providerId: String,
 
         var email: String,
 
+        var name: String,
+
+        var personId: UUID? = null,
+
         var password: String? = null,
 
-        var hashedPassword: String? = null,
-
-        var name: String? = null,
-
-        var personId: UUID? = null
+        var hashedPassword: String? = null
 )

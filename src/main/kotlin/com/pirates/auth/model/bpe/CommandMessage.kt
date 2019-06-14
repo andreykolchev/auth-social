@@ -18,8 +18,7 @@ data class CommandMessage @JsonCreator constructor(
 
 enum class CommandType(private val value: String) {
 
-    REGISTRATION("registration"),
-    LOGIN("login");
+    REGISTRATION("registration");
 
     @JsonValue
     fun value(): String {
