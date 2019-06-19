@@ -5,7 +5,6 @@ import com.pirates.auth.config.properties.Auth2Properties
 import com.pirates.auth.model.AuthProvider.*
 import com.pirates.auth.model.AuthUser
 import com.pirates.auth.model.Constants
-import com.pirates.auth.repository.UserRepository
 import com.pirates.chat.model.bpe.ResponseDto
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.http.HttpEntity
@@ -19,7 +18,6 @@ import org.springframework.web.client.RestTemplate
 class Auth2Service(private val prop: Auth2Properties,
                    private val restTemplate: RestTemplate,
                    private val operationService: OperationService,
-                   private val userRepository: UserRepository,
                    private val processService: ProcessService) {
 
     fun getProviderAuthURL(provider: String, operationID: String): String {
@@ -62,7 +60,7 @@ class Auth2Service(private val prop: Auth2Properties,
                 name = userData[Constants.NAME]!!.asText()
         )
 
-       return  processService.processUserData(user)
+        return processService.processProviderUserData(user)
     }
 
     companion object {

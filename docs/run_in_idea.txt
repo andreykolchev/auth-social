@@ -1,2 +1,2 @@
 
--Xmx128m -Dspring.config.location=file:/Users/andreykolchev/IdeaProject/crossmarket/smart-bids/docs/application.yml
+-Xms256m -Xmx256m -Dspring.config.location=file:/home/user/IdeaProjects/crossmarket/auth-social/docs/application.yml

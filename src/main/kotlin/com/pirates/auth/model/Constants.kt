@@ -15,4 +15,6 @@ object Constants {
     const val ID = "id"
     const val EMAIL = "email"
     const val NAME = "name"
+    const val AUTHORIZATION_HEADER = "Authorization"
+    const val AUTH_SCHEMA = "bearer"
 }

@@ -15,5 +15,4 @@ data class UserEntity(
         var email: String,
 
         var hashedPassword: String? = null
-
 )

@@ -31,7 +31,8 @@ class AuthController(private val authService: AuthService) {
                 providerId = req.getParameter(LOGIN),
                 email = req.getParameter(LOGIN),
                 password = req.getParameter(PASSWORD),
-                operationId = operationID
+                operationId = operationID,
+                name = ""
         )
         return ResponseEntity(authService.login(user), HttpStatus.OK)
     }
@@ -39,6 +40,8 @@ class AuthController(private val authService: AuthService) {
     @PostMapping("/registration/{$OPERATION_ID}")
     fun registration(@PathVariable(OPERATION_ID) operationID: String, req: HttpServletRequest): ResponseEntity<ResponseDto> {
         val user = AuthUser(
+                provider = AUTH_PROVIDER,
+                providerId = req.getParameter(LOGIN),
                 email = req.getParameter(LOGIN),
                 password = req.getParameter(PASSWORD),
                 name = (req.getParameter(FIRST_NAME) + " " + req.getParameter(LAST_NAME)).trim(),

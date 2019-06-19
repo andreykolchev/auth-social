@@ -3,8 +3,6 @@ package com.pirates.auth.repository
 import com.datastax.driver.core.Session
 import com.datastax.driver.core.querybuilder.QueryBuilder
 import com.datastax.driver.core.querybuilder.QueryBuilder.eq
-import com.pirates.auth.exception.ErrorException
-import com.pirates.auth.exception.ErrorType
 import com.pirates.auth.model.entity.UserEntity
 import org.springframework.stereotype.Repository
 
@@ -28,7 +26,7 @@ class UserRepository(private val cassandraSession: Session) {
         val query = QueryBuilder.select()
                 .all()
                 .from(USER_TABLE)
-                .where(QueryBuilder.eq(PROVIDER_ID, providerId))
+                .where(eq(PROVIDER_ID, providerId))
                 .limit(1)
         val row = cassandraSession.execute(query).one()
         return if (row != null)
@@ -43,16 +41,8 @@ class UserRepository(private val cassandraSession: Session) {
         else null
     }
 
-    fun checkEmailRegistration(email: String) {
-        val query = QueryBuilder.select()
-                .from(USER_VIEW)
-                .where(eq(EMAIL, email))
-        if (cassandraSession.execute(query).count() > 0) throw ErrorException(ErrorType.EMAIL_ALREADY_EXISTS, email)
-    }
-
     companion object {
         private const val USER_TABLE = "auth_user"
-        private const val USER_VIEW = "auth_user_view"
         private const val PROVIDER_ID = "provider_id"
         private const val PROVIDER = "provider"
         private const val STATUS = "status"
