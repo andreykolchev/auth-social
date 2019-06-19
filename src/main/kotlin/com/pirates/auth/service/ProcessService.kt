@@ -2,7 +2,6 @@ package com.pirates.auth.service
 
 import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.exception.ErrorType
-import com.pirates.auth.jobworker.CommandWorker
 import com.pirates.auth.model.AuthDataRs
 import com.pirates.auth.model.AuthUser
 import com.pirates.auth.model.Constants.AUTH_PROVIDER
@@ -24,14 +23,11 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
-import java.util.*
 
 @Service
 class ProcessService(private val userRepository: UserRepository,
                      private val restTemplate: RestTemplate,
-                     private val tokenService: TokenService,
-                     private val commandWorker: CommandWorker
-
+                     private val tokenService: TokenService
 ) {
 
     @Value("\${process.uDataUrl}")
@@ -73,7 +69,7 @@ class ProcessService(private val userRepository: UserRepository,
             if (userEntity.hashedPassword?.equals(login.password?.hashPassword()) != true) throw ErrorException(ErrorType.INVALID_PASSWORD)
         }
         val token = tokenService.getTokenByUserCredentials(userEntity)
-        return wsTokenRequest(personId = userEntity.personId, token = token, operationId = login.operationId)
+        return wsToken(personId = userEntity.personId, token = token, operationId = login.operationId)
     }
 
     private fun registrationByProcess(registration: AuthUser): ResponseDto {
@@ -81,13 +77,13 @@ class ProcessService(private val userRepository: UserRepository,
         val hashedPassword = if (registration.provider == AUTH_PROVIDER) registration.password?.hashPassword() else null
         //check user email and personID
         val user = registration.copy(hashedPassword = hashedPassword)
-        val uDataResponse = uDataRegistrationRequest(user, registration.operationId)
+        val uDataResponse = uDataRegistration(user, registration.operationId)
         if (uDataResponse.errors != null) return ResponseDto(id = uDataResponse.id, errors = uDataResponse.errors)
         val userResponse = toObject(AuthUser::class.java, toJsonNode(uDataResponse.data!!))
         val userEntity = getUserEntity(userResponse)
         userRepository.save(userEntity)
         val token = tokenService.getTokenByUserCredentials(userEntity)
-        return wsTokenRequest(personId = userEntity.personId, token = token, operationId = registration.operationId)
+        return wsToken(personId = userEntity.personId, token = token, operationId = registration.operationId)
     }
 
     private fun loginByRest(login: AuthUser, userEntity: UserEntity): ResponseDto {
@@ -104,7 +100,7 @@ class ProcessService(private val userRepository: UserRepository,
         val hashedPassword = if (registration.provider == AUTH_PROVIDER) registration.password?.hashPassword() else null
         //check user email and personID
         val user = registration.copy(hashedPassword = hashedPassword)
-        val uDataResponse = uDataRegistrationRequest(user, registration.operationId)
+        val uDataResponse = uDataRegistration(user, registration.operationId)
         if (uDataResponse.errors != null) return ResponseDto(id = uDataResponse.id, errors = uDataResponse.errors)
         val userResponse = toObject(AuthUser::class.java, toJsonNode(uDataResponse.data!!))
         val userEntity = getUserEntity(userResponse)
@@ -113,7 +109,7 @@ class ProcessService(private val userRepository: UserRepository,
         return ResponseDto(id = registration.operationId, data = token)
     }
 
-    private fun uDataRegistrationRequest(user: AuthUser, operationId: String): ResponseDto {
+    private fun uDataRegistration(user: AuthUser, operationId: String): ResponseDto {
         val cm = CommandMessage(
                 id = operationId,
                 command = CommandType.REGISTRATION,
@@ -128,7 +124,7 @@ class ProcessService(private val userRepository: UserRepository,
         return response.body ?: throw ErrorException(ErrorType.INVALID_DATA)
     }
 
-    private fun wsTokenRequest(personId: String, token: String, operationId: String): ResponseDto {
+    private fun wsToken(personId: String, token: String, operationId: String): ResponseDto {
         val context = createObjectNode()
         context.put(PERSON_ID, personId)
         val data = ResponseDto(
