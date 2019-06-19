@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class CommandService(private val historyService: HistoryService,
-                     private val userService: UserService) {
+                     private val userService: UserService,
+                     private val tokenService: TokenService) {
 
     fun execute(cm: CommandMessage): ResponseDto {
         val historyEntity = historyService.getHistory(cm)
@@ -22,7 +23,6 @@ class CommandService(private val historyService: HistoryService,
                 response = history ?: userService.create(cm)
                 history ?: historyService.saveHistory(cm, response)
             }
-            CommandType.LOGIN -> response = userService.createToken(cm)
         }
         return response
     }

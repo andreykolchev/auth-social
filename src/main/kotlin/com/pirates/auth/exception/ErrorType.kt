@@ -13,5 +13,6 @@ enum class ErrorType constructor(val code: String, val message: String) {
     INVALID_OPERATION_ID("00.09", "Invalid operation id."),
     INVALID_PASSWORD("00.10", "Invalid password."),
     INVALID_DATA("00.11", "Invalid data."),
-    EMAIL_ALREADY_EXISTS("00.12", "Email already exists.");
+    EMAIL_ALREADY_EXISTS("00.12", "Email already exists."),
+    INVALID_EMAIL("00.13", "Invalid email.");
 }

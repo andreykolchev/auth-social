@@ -2,6 +2,7 @@ package com.pirates.auth.repository
 
 import com.datastax.driver.core.Session
 import com.datastax.driver.core.querybuilder.QueryBuilder
+import com.datastax.driver.core.querybuilder.QueryBuilder.eq
 import com.pirates.auth.model.entity.UserEntity
 import org.springframework.stereotype.Repository
 
@@ -13,8 +14,8 @@ class UserRepository(private val cassandraSession: Session) {
         val insert = QueryBuilder.insertInto(USER_TABLE)
                 .value(PROVIDER_ID, entity.providerId)
                 .value(PERSON_ID, entity.personId)
-                .value(PROVIDER, entity.provider.toString())
-                .value(STATUS, entity.status.toString())
+                .value(PROVIDER, entity.provider)
+                .value(STATUS, entity.status)
                 .value(NAME, entity.name)
                 .value(EMAIL, entity.email)
                 .value(PASSWORD, entity.hashedPassword)
@@ -25,7 +26,7 @@ class UserRepository(private val cassandraSession: Session) {
         val query = QueryBuilder.select()
                 .all()
                 .from(USER_TABLE)
-                .where(QueryBuilder.eq(PROVIDER_ID, providerId))
+                .where(eq(PROVIDER_ID, providerId))
                 .limit(1)
         val row = cassandraSession.execute(query).one()
         return if (row != null)

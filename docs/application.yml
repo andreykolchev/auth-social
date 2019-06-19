@@ -19,9 +19,10 @@ redis:
   host: 127.0.0.1
   port: 6379
 
-uData:
-  url: http://localhost:8082/command
-  process: false
+process:
+  uDataUrl: http://localhost:8082/command
+  wsUrl: http://localhost:8084/auth
+  byProcess: true
 
 oauth2:
   facebook:
@@ -31,8 +32,8 @@ oauth2:
     tokenUri: https://graph.facebook.com/v3.3/oauth/access_token
     userInfoUri: https://graph.facebook.com/v3.3/me?fields=id,name,email
   google:
-    clientId: 678704667422-30a6u2impk6ncaktmb1g7dedl9dtrcn9.apps.googleusercontent.com
-    clientSecret: VhxQW4AE4eWRJc7jRBEg_TZQ
+    clientId: 678704667422-9s1vbhdqf396eaededr26k8rqo6bs65b.apps.googleusercontent.com
+    clientSecret: GCIOCkrq-ut6_3LjYOtbrSdm
     authUri: https://accounts.google.com/o/oauth2/v2/auth
     tokenUri: https://www.googleapis.com/oauth2/v4/token
     userInfoUri: https://www.googleapis.com/userinfo/v2/me?fields=id,name,email

@@ -31,7 +31,8 @@ class AuthController(private val authService: AuthService) {
                 providerId = req.getParameter(LOGIN),
                 email = req.getParameter(LOGIN),
                 password = req.getParameter(PASSWORD),
-                operationId = operationID
+                operationId = operationID,
+                name = ""
         )
         return ResponseEntity(authService.login(user), HttpStatus.OK)
     }

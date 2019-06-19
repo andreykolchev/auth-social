@@ -17,7 +17,7 @@ class TokenService(private val jwtProperties: JWTProperties,
 
     fun getTokenByUserCredentials(userEntity: UserEntity): String {
         return jwtService.genToken(
-                claims = mapOf<String, Any>(PERSON_ID_CLAIM to userEntity.personId!!),
+                claims = mapOf<String, Any>(PERSON_ID_CLAIM to userEntity.personId),
                 header = mapOf<String, Any>(HEADER_TOKEN_TYPE to TokenType.ACCESS.toString()),
                 expiresOn = Date(System.currentTimeMillis() + 1000 * jwtProperties.accessLifeTime)
         )
