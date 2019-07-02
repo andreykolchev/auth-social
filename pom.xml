@@ -33,7 +33,7 @@
         <!--cassandra-->
         <cassandra-driver.version>3.7.1</cassandra-driver.version>
         <!--Zeebe client-->
-        <zeebe.version>0.17.0</zeebe.version>
+        <zeebe.version>0.18.0</zeebe.version>
         <guava.version>24.1.1-jre</guava.version>
         <!--Redis client-->
         <redisson.version>3.10.6</redisson.version>
