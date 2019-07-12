@@ -16,11 +16,13 @@ class WebMvcConfig : WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/interaction/**").maxAge(3600)
         registry.addMapping("/static/**").maxAge(3600)
+        registry.addMapping("/favicon.ico").maxAge(3600)
     }
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/")
         registry.addResourceHandler("/inform/**")
+        registry.addResourceHandler("/favicon.ico")
     }
 
 }
