@@ -20,7 +20,7 @@ class HistoryService(private val historyRepository: HistoryRepository) {
         historyRepository.saveHistory(
                 HistoryEntity(
                         operationId = input.id.toUUID(),
-                        operationDate = timestampNowUTC(),
+                        commandDate = timestampNowUTC(),
                         command = input.command.value(),
                         inputData = toJson(input),
                         outputData = toJson(output)
