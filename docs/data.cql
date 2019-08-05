@@ -1,41 +1,32 @@
-create table if not exists crossmarket.interaction_data
+CREATE KEYSPACE IF NOT EXISTS crossmarket WITH replication = {'class':'SimpleStrategy', 'replication_factor':2};
+
+CREATE TABLE IF NOT EXISTS crossmarket.auth_user
 (
-    operation_id    uuid,
-    command_name    text,
-    command_id      text,
-    command_date    timestamp,
-    request_data    text,
-    request_date    timestamp,
-    request_status  text,
-    response_data   text,
-    response_date   timestamp,
-    response_status text,
-    process_id      text,
-    context         text,
-    primary key (operation_id, command_name, command_id)
-) with clustering order by (command_name asc, command_date desc);
+    provider_id    text not null,
+    person_id      text,
+    provider       text,
+    status         text,
+    name           text,
+    email          text,
+    hashedPassword text,
+    primary key (provider_id)
+);
 
-create index if not exists request_status_index
-    on crossmarket.interaction_data (request_status);
+CREATE MATERIALIZED VIEW crossmarket.auth_user_view
+AS
+SELECT email, provider_id
+FROM crossmarket.auth_user
+WHERE provider_id IS NOT NULL AND person_id IS NOT NULL AND email IS NOT NULL
+PRIMARY KEY ((email), provider_id)
 
-create index if not exists response_status_index
-    on crossmarket.interaction_data (response_status);
+INSERT INTO auth_user (person_id,provider,provider_id,email,status,name,hashedPassword) VALUES (1eae43dc-2c4d-4970-aa00-ccf1ddf7bee0,'facebook','2265596506834324','andreykolchev@gmail.com','created','Andrey Kolchev',null);
 
-
-create table if not exists crossmarket.interaction_offset
+CREATE TABLE IF NOT EXISTS crossmarket.auth_history
 (
-    command_name text,
-    command_date timestamp,
-    offset       text,
-    operation_id uuid,
-    primary key (command_name, command_date)
-) with clustering order by (command_date desc);
-
-
-create table if not exists crossmarket.integration_data
-(
-    ext_id    text,
-    int_id    text,
-    json_data text,
-    primary key (ext_id)
+    operation_id   uuid,
+    command        text,
+    operation_date timestamp,
+    input_data     text,
+    output_data    text,
+    primary key (operation_id, command)
 );
