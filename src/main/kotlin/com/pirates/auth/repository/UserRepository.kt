@@ -43,7 +43,7 @@ class UserRepository(private val cassandraSession: Session) {
     }
 
     companion object {
-        private const val USER_TABLE = "auth_user_new"
+        private const val USER_TABLE = "auth_user"
         private const val PROVIDER_ID = "provider_id"
         private const val PROVIDER = "provider"
         private const val PERSON_ID = "person_id"
