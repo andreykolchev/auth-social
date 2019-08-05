@@ -3,13 +3,13 @@ CREATE KEYSPACE IF NOT EXISTS crossmarket WITH replication = {'class':'SimpleStr
 CREATE TABLE IF NOT EXISTS crossmarket.auth_user
 (
     provider_id    text not null,
-    person_id      text,
     provider       text,
+    person_id      text,
     status         text,
     name           text,
     email          text,
     hashedPassword text,
-    primary key (provider_id)
+    primary key (provider_id, provider)
 );
 
 CREATE MATERIALIZED VIEW crossmarket.auth_user_view

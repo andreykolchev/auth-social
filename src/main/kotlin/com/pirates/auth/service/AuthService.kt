@@ -4,6 +4,7 @@ import com.pirates.auth.config.properties.Auth2Properties
 import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.exception.ErrorType
 import com.pirates.auth.model.AuthUser
+import com.pirates.auth.model.Constants.AUTH_PROVIDER
 import com.pirates.auth.repository.UserRepository
 import com.pirates.chat.model.bpe.ResponseDto
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -18,7 +19,7 @@ class AuthService(private val processService: ProcessService,
 
     fun login(login: AuthUser): ResponseDto {
         operationService.check(login.operationId)
-        val userEntity = userRepository.getByProviderId(login.providerId) ?: throw ErrorException(ErrorType.INVALID_EMAIL)
+        val userEntity = userRepository.getByProviderId(providerId = login.providerId, provider = login.provider) ?: throw ErrorException(ErrorType.INVALID_EMAIL)
         return processService.login(login, userEntity)
     }
 

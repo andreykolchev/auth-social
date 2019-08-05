@@ -40,7 +40,7 @@ class ProcessService(private val userRepository: UserRepository,
     private val byProcess: Boolean = false
 
     fun processProviderUserData(user: AuthUser): ResponseDto {
-        val userEntity = userRepository.getByProviderId(user.providerId)
+        val userEntity = userRepository.getByProviderId(providerId = user.providerId, provider = user.provider)
         return if (userEntity != null) {
             login(user, userEntity)
         } else {
