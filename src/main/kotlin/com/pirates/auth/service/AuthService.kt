@@ -4,7 +4,6 @@ import com.pirates.auth.config.properties.Auth2Properties
 import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.exception.ErrorType
 import com.pirates.auth.model.AuthUser
-import com.pirates.auth.model.Constants.AUTH_PROVIDER
 import com.pirates.auth.repository.UserRepository
 import com.pirates.chat.model.bpe.ResponseDto
 import org.springframework.boot.context.properties.EnableConfigurationProperties
