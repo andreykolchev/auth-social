@@ -17,30 +17,28 @@ class HistoryRepository(private val cassandraSession: Session) {
                 .and(eq(COMMAND, command))
         val row = cassandraSession.execute(query).one()
         return if (row != null) HistoryEntity(
-                row.getUUID(OPERATION_ID),
-                row.getTimestamp(OPERATION_DATE),
-                row.getString(COMMAND),
-                row.getString(INPUT_DATA),
-                row.getString(OUTPUT_DATA)) else null
-
+                operationId = row.getUUID(OPERATION_ID),
+                commandDate = row.getTimestamp(COMMAND_DATE),
+                command = row.getString(COMMAND),
+                inputData = row.getString(INPUT_DATA),
+                outputData = row.getString(OUTPUT_DATA)) else null
     }
 
     fun saveHistory(entity: HistoryEntity) {
         val insert = insertInto(TABLE)
         insert.value(OPERATION_ID, entity.operationId)
                 .value(COMMAND, entity.command)
-                .value(OPERATION_DATE, entity.operationDate)
+                .value(COMMAND_DATE, entity.commandDate)
                 .value(INPUT_DATA, entity.inputData)
                 .value(OUTPUT_DATA, entity.outputData)
         cassandraSession.execute(insert)
     }
 
-
     companion object {
-        private const val TABLE = "auth_history"
+        private const val TABLE = "operation_history"
         private const val OPERATION_ID = "operation_id"
         private const val COMMAND = "command"
-        private const val OPERATION_DATE = "operation_date"
+        private const val COMMAND_DATE = "command_date"
         private const val INPUT_DATA = "input_data"
         private const val OUTPUT_DATA = "output_data"
     }

@@ -6,7 +6,7 @@ data class HistoryEntity(
 
         var operationId: UUID,
 
-        var operationDate: Date,
+        var commandDate: Date,
 
         var command: String,
 
