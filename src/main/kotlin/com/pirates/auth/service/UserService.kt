@@ -23,6 +23,7 @@ class UserService(private val userRepository: UserRepository,
         val userEntity = UserEntity(
                 providerId = user.providerId,
                 personId = user.personId!!.toString(),
+                profileId = user.profileId!!.toString(),
                 provider = user.provider,
                 name = user.name,
                 hashedPassword = user.hashedPassword,
