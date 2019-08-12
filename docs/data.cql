@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS crossmarket.auth_user
     provider_id    text not null,
     provider       text,
     person_id      text,
+    profile_id      text,
     status         text,
     name           text,
     email          text,

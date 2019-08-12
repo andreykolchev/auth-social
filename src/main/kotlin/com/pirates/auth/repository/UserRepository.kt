@@ -15,6 +15,7 @@ class UserRepository(private val cassandraSession: Session) {
                 .value(PROVIDER_ID, entity.providerId)
                 .value(PROVIDER, entity.provider)
                 .value(PERSON_ID, entity.personId)
+                .value(PROFILE_ID, entity.profileId)
                 .value(STATUS, entity.status)
                 .value(NAME, entity.name)
                 .value(EMAIL, entity.email)
@@ -35,6 +36,7 @@ class UserRepository(private val cassandraSession: Session) {
                     providerId = row.getString(PROVIDER_ID),
                     provider = row.getString(PROVIDER),
                     personId = row.getString(PERSON_ID),
+                    profileId = row.getString(PROFILE_ID),
                     status = row.getString(STATUS),
                     name = row.getString(NAME),
                     email = row.getString(EMAIL),
@@ -47,6 +49,7 @@ class UserRepository(private val cassandraSession: Session) {
         private const val PROVIDER_ID = "provider_id"
         private const val PROVIDER = "provider"
         private const val PERSON_ID = "person_id"
+        private const val PROFILE_ID = "profile_id"
         private const val STATUS = "status"
         private const val NAME = "name"
         private const val EMAIL = "email"

@@ -6,6 +6,7 @@ import com.pirates.auth.model.AuthDataRs
 import com.pirates.auth.model.AuthUser
 import com.pirates.auth.model.Constants.AUTH_PROVIDER
 import com.pirates.auth.model.Constants.PERSON_ID
+import com.pirates.auth.model.Constants.PROFILE_ID
 import com.pirates.auth.model.UserStatus
 import com.pirates.auth.model.entity.UserEntity
 import com.pirates.auth.repository.UserRepository
@@ -69,7 +70,7 @@ class ProcessService(private val userRepository: UserRepository,
             if (userEntity.hashedPassword?.equals(login.password?.hashPassword()) != true) throw ErrorException(ErrorType.INVALID_PASSWORD)
         }
         val token = tokenService.getTokenByUserCredentials(userEntity)
-        return wsToken(personId = userEntity.personId, token = token, operationId = login.operationId)
+        return wsToken(personId = userEntity.personId, profileId = userEntity.profileId, token = token, operationId = login.operationId)
     }
 
     private fun registrationByProcess(registration: AuthUser): ResponseDto {
@@ -83,7 +84,7 @@ class ProcessService(private val userRepository: UserRepository,
         val userEntity = getUserEntity(userResponse)
         userRepository.save(userEntity)
         val token = tokenService.getTokenByUserCredentials(userEntity)
-        return wsToken(personId = userEntity.personId, token = token, operationId = registration.operationId)
+        return wsToken(personId = userEntity.personId, profileId = userEntity.profileId, token = token, operationId = registration.operationId)
     }
 
     private fun loginByRest(login: AuthUser, userEntity: UserEntity): ResponseDto {
@@ -124,9 +125,10 @@ class ProcessService(private val userRepository: UserRepository,
         return response.body ?: throw ErrorException(ErrorType.INVALID_DATA)
     }
 
-    private fun wsToken(personId: String, token: String, operationId: String): ResponseDto {
+    private fun wsToken(personId: String, profileId: String, token: String, operationId: String): ResponseDto {
         val context = createObjectNode()
         context.put(PERSON_ID, personId)
+        context.put(PROFILE_ID, profileId)
         val data = ResponseDto(
                 id = operationId,
                 context = context,
@@ -142,6 +144,7 @@ class ProcessService(private val userRepository: UserRepository,
         return UserEntity(
                 providerId = user.providerId,
                 personId = user.personId!!.toString(),
+                profileId = user.profileId!!.toString(),
                 provider = user.provider,
                 name = user.name,
                 email = user.email,
