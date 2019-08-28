@@ -24,7 +24,7 @@ check_success_build_demo:
     only:
         - demo
     script:
-        - sh CI_CD/scripts/build_stage_failed.sh
+        - sh CI_CD/scripts/build_demo_failed.sh
     when: on_failure
 
 # Demo Block END #
