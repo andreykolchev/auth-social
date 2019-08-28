@@ -18,7 +18,8 @@ FROM openjdk:8-jre-alpine
 
 WORKDIR /maven
 
-RUN apk add bash
+RUN apk update && \
+	apk add bash
 
 COPY --from=0 /app/target /maven
 COPY --from=0 /app/src/main/scripts/artifact_runner.sh /maven
