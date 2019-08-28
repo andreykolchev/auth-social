@@ -1,14 +1,7 @@
 #!/bin/bash
 
-### Start of RockerChat Message ###
-
-curl -X POST -H 'Content-Type: application/json' --data '
-{
-"text": "🤘 Начата сборка Stage Auth-Social, следить за ходом сборки можно тут - https://git.cross-market.com/crossmarket/auth-social/pipelines 🤘"
-}
-' https://chat.tokmaster.com/hooks/wKf7c5siAG26JtsoR/7dNThTFYN3zBN9qGGJ5MdiGoDaA7B2RCmEQnbE4GaeQmopES
-
-### End of RockerChat Message ###
+set -e
+set -x
 
 ### Start of Telegam Message ###
 
@@ -32,7 +25,7 @@ fi
 
 IMAGE="crossmarket/auth-social"
 TAG="${1:-stage}"
-docker build --no-cache --rm -t "${IMAGE}:${TAG}" .
+docker build -f CI_CD/Dockerfiles/Dockerfile_build.stage --compress --no-cache -t "${IMAGE}:${TAG}" .
 docker push "${IMAGE}:${TAG}"
 
 curl https://hooks.stage2.cross-market.com/auth-socialupdate
