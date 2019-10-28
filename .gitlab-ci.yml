@@ -1,49 +1,49 @@
 image: docker:latest
 
 before_script:
-    - docker login -u atdevops -p OkPWQIuKqo0OTT
-    - apk add curl
+  - docker login -u atdevops -p OkPWQIuKqo0OTT
+  - apk add curl
 
 stages:
-    - build_stage
-    - check_success_build_stage
-    - build_demo
-    - check_success_build_demo
+  - build_stage
+  - check_success_build_stage
+  - build_demo
+  - check_success_build_demo
 
 # Demo Block #
 
 build_demo:
-    stage: build_demo
-    only:
-        - demo
-    script:
-        - sh ci-demo-build.sh
+  stage: build_demo
+  only:
+    - demo
+  script:
+    - sh ci-demo-build.sh
 
 check_success_build_demo:
-    stage: check_success_build_demo
-    only:
-        - demo
-    script:
-        - sh CI_CD/scripts/build_demo_failed.sh
-    when: on_failure
+  stage: check_success_build_demo
+  only:
+    - demo
+  script:
+    - sh CI_CD/scripts/build_demo_failed.sh
+  when: on_failure
 
 # Demo Block END #
 
 # Stage Block #
 
 build_stage:
-    stage: build_stage
-    only:
-        - stage
-    script:
-        - sh ci-stage-build.sh
+  stage: build_stage
+  only:
+    - stage
+  script:
+    - sh ci-stage-build.sh
 
 check_success_build_stage:
-    stage: check_success_build_stage
-    only:
-        - stage
-    script:
-        - sh CI_CD/scripts/build_stage_failed.sh
-    when: on_failure
+  stage: check_success_build_stage
+  only:
+    - stage
+  script:
+    - sh CI_CD/scripts/build_stage_failed.sh
+  when: on_failure
 
 # Stage Block END #

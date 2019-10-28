@@ -35,8 +35,8 @@
         <!--Zeebe client-->
         <zeebe.version>0.18.0</zeebe.version>
         <guava.version>24.1.1-jre</guava.version>
-        <!--Redis client-->
-        <redisson.version>3.10.6</redisson.version>
+        <!--hazelcast-->
+        <hazelcast.version>3.11</hazelcast.version>
         <!--Docker-->
         <docker-registry>cross-market</docker-registry>
         <docker-image-profile></docker-image-profile>
@@ -90,11 +90,11 @@
             <artifactId>java-jwt</artifactId>
             <version>${jwt.version}</version>
         </dependency>
-        <!--redis-->
+        <!-- hazelcast-->
         <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-            <version>${redisson.version}</version>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast-client</artifactId>
+            <version>${hazelcast.version}</version>
         </dependency>
         <!--zeebe-->
         <dependency>

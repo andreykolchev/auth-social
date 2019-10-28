@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import
 @Import(DatabaseConfig::class,
         ServiceConfig::class,
         WebMvcConfig::class,
-        RedisConfig::class,
+        StorageConfig::class,
         ZeebeConfig::class,
         DatabaseConfig::class
 )

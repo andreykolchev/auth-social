@@ -12,4 +12,8 @@ class OperationService(private val operationRepository: OperationRepository) {
         if (!operationRepository.isOperationIdExists(operationID)) throw ErrorException(ErrorType.INVALID_OPERATION_ID)
     }
 
+    fun sendMessage(message: String) {
+        operationRepository.publishMessage(message)
+    }
+
 }

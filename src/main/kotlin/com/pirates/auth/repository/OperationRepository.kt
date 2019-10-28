@@ -1,21 +1,32 @@
 package com.pirates.auth.repository
 
-import org.redisson.api.RBucket
-import org.redisson.api.RedissonClient
+import com.hazelcast.core.HazelcastInstance
+import com.hazelcast.core.ITopic
+import com.pirates.auth.config.StorageConfig
 import org.springframework.stereotype.Repository
 
 @Repository
-class OperationRepository(
-        private val redissonClient: RedissonClient
-) {
+class OperationRepository(storageConfig: StorageConfig) {
+
+    private val hazelcastInstance: HazelcastInstance = storageConfig.hazelcastInstance()
+    private val topic: ITopic<String>
+
+    init {
+        topic = hazelcastInstance.getTopic("auth-ws-topic")
+    }
+
+    fun publishMessage(message: String) {
+        topic.publish(message)
+    }
 
     fun isOperationIdExists(operationID: String): Boolean {
         val key = "${REDIS_AUTH_KEY}_$operationID"
-        val bucket: RBucket<String> = redissonClient.getBucket<String>(key)
-        return bucket.get() != null
+        val map = hazelcastInstance.getMap<String, String>("client-operation")
+        return map.getValue(key) != null
     }
 
     companion object {
         private const val REDIS_AUTH_KEY = "auth"
     }
+
 }

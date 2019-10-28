@@ -15,9 +15,11 @@ cassandra:
 zeebe:
   broker: 127.0.0.1:26500
 
-redis:
-  host: 127.0.0.1
-  port: 6379
+hazelcast:
+  cluster: 134.119.221.14:5431 #127.0.0.1:5701
+  group: hazelcast-stage
+  password: s3crEt
+
 
 process:
   uDataUrl: http://localhost:8082/command

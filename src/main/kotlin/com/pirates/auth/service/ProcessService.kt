@@ -14,10 +14,7 @@ import com.pirates.chat.model.bpe.ApiVersion
 import com.pirates.chat.model.bpe.CommandMessage
 import com.pirates.chat.model.bpe.CommandType
 import com.pirates.chat.model.bpe.ResponseDto
-import com.pirates.chat.utils.createObjectNode
-import com.pirates.chat.utils.hashPassword
-import com.pirates.chat.utils.toJsonNode
-import com.pirates.chat.utils.toObject
+import com.pirates.chat.utils.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -28,7 +25,8 @@ import org.springframework.web.client.RestTemplate
 @Service
 class ProcessService(private val userRepository: UserRepository,
                      private val restTemplate: RestTemplate,
-                     private val tokenService: TokenService
+                     private val tokenService: TokenService,
+                     private val operationService: OperationService
 ) {
 
     @Value("\${process.uDataUrl}")
@@ -70,7 +68,7 @@ class ProcessService(private val userRepository: UserRepository,
             if (userEntity.hashedPassword?.equals(login.password?.hashPassword()) != true) throw ErrorException(ErrorType.INVALID_PASSWORD)
         }
         val token = tokenService.getTokenByUserCredentials(userEntity)
-        return wsToken(personId = userEntity.personId, profileId = userEntity.profileId, token = token, operationId = login.operationId)
+        return wsSendToken(personId = userEntity.personId, profileId = userEntity.profileId, token = token, operationId = login.operationId)
     }
 
     private fun registrationByProcess(registration: AuthUser): ResponseDto {
@@ -84,7 +82,7 @@ class ProcessService(private val userRepository: UserRepository,
         val userEntity = getUserEntity(userResponse)
         userRepository.save(userEntity)
         val token = tokenService.getTokenByUserCredentials(userEntity)
-        return wsToken(personId = userEntity.personId, profileId = userEntity.profileId, token = token, operationId = registration.operationId)
+        return wsSendToken(personId = userEntity.personId, profileId = userEntity.profileId, token = token, operationId = registration.operationId)
     }
 
     private fun loginByRest(login: AuthUser, userEntity: UserEntity): ResponseDto {
@@ -125,19 +123,16 @@ class ProcessService(private val userRepository: UserRepository,
         return response.body ?: throw ErrorException(ErrorType.INVALID_DATA)
     }
 
-    private fun wsToken(personId: String, profileId: String, token: String, operationId: String): ResponseDto {
+    private fun wsSendToken(personId: String, profileId: String, token: String, operationId: String): ResponseDto {
         val context = createObjectNode()
         context.put(PERSON_ID, personId)
         context.put(PROFILE_ID, profileId)
-        val data = ResponseDto(
+        val message = ResponseDto(
                 id = operationId,
                 context = context,
                 data = AuthDataRs(token = token))
-        val headers = HttpHeaders()
-        headers.contentType = MediaType.APPLICATION_JSON
-        val request = HttpEntity(data, headers)
-        val response = restTemplate.postForEntity(wsUrl, request, ResponseDto::class.java)
-        return if (response.body?.errors != null) ResponseDto(id = operationId, errors = response.body?.errors) else ResponseDto(id = operationId, data = "ok")
+        operationService.sendMessage(toJson(message))
+        return ResponseDto(id = operationId, data = "ok")
     }
 
     private fun getUserEntity(user: AuthUser): UserEntity {
