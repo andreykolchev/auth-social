@@ -1,4 +1,4 @@
-package com.pirates.chat.model.bpe
+package com.pirates.auth.model.bpe
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude

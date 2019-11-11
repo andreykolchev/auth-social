@@ -8,7 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import com.pirates.auth.config.properties.RSAKeyProperties
 import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.exception.ErrorType
-import com.pirates.chat.utils.decodeBase64
+import com.pirates.auth.utils.decodeBase64
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service
 import java.security.KeyFactory

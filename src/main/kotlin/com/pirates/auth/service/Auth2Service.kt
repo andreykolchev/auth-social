@@ -5,7 +5,7 @@ import com.pirates.auth.config.properties.Auth2Properties
 import com.pirates.auth.model.AuthProvider.*
 import com.pirates.auth.model.AuthUser
 import com.pirates.auth.model.Constants
-import com.pirates.chat.model.bpe.ResponseDto
+import com.pirates.auth.model.bpe.ResponseDto
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders

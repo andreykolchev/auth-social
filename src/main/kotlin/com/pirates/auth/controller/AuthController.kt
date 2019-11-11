@@ -10,10 +10,10 @@ import com.pirates.auth.model.Constants.LOGIN
 import com.pirates.auth.model.Constants.OPERATION_ID
 import com.pirates.auth.model.Constants.PASSWORD
 import com.pirates.auth.service.AuthService
-import com.pirates.chat.model.bpe.ResponseDto
-import com.pirates.chat.model.bpe.getEnumExceptionResponseDto
-import com.pirates.chat.model.bpe.getErrorExceptionResponseDto
-import com.pirates.chat.model.bpe.getExceptionResponseDto
+import com.pirates.auth.model.bpe.ResponseDto
+import com.pirates.auth.model.bpe.getEnumExceptionResponseDto
+import com.pirates.auth.model.bpe.getErrorExceptionResponseDto
+import com.pirates.auth.model.bpe.getExceptionResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller

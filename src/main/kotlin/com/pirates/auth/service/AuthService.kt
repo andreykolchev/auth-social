@@ -5,7 +5,7 @@ import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.exception.ErrorType
 import com.pirates.auth.model.AuthUser
 import com.pirates.auth.repository.UserRepository
-import com.pirates.chat.model.bpe.ResponseDto
+import com.pirates.auth.model.bpe.ResponseDto
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service
 

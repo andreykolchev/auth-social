@@ -6,10 +6,10 @@ import com.pirates.auth.model.Constants.PERSON_ID
 import com.pirates.auth.model.UserStatus
 import com.pirates.auth.model.entity.UserEntity
 import com.pirates.auth.repository.UserRepository
-import com.pirates.chat.model.bpe.CommandMessage
-import com.pirates.chat.model.bpe.ResponseDto
-import com.pirates.chat.utils.createObjectNode
-import com.pirates.chat.utils.toObject
+import com.pirates.auth.model.bpe.CommandMessage
+import com.pirates.auth.model.bpe.ResponseDto
+import com.pirates.auth.utils.createObjectNode
+import com.pirates.auth.utils.toObject
 import org.springframework.stereotype.Service
 
 @Service

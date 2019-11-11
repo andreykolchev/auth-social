@@ -10,11 +10,11 @@ import com.pirates.auth.model.Constants.PROFILE_ID
 import com.pirates.auth.model.UserStatus
 import com.pirates.auth.model.entity.UserEntity
 import com.pirates.auth.repository.UserRepository
-import com.pirates.chat.model.bpe.ApiVersion
-import com.pirates.chat.model.bpe.CommandMessage
-import com.pirates.chat.model.bpe.CommandType
-import com.pirates.chat.model.bpe.ResponseDto
-import com.pirates.chat.utils.*
+import com.pirates.auth.model.bpe.ApiVersion
+import com.pirates.auth.model.bpe.CommandMessage
+import com.pirates.auth.model.bpe.CommandType
+import com.pirates.auth.model.bpe.ResponseDto
+import com.pirates.auth.utils.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders

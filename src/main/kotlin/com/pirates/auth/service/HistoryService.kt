@@ -2,11 +2,11 @@ package com.pirates.auth.service
 
 import com.pirates.auth.model.entity.HistoryEntity
 import com.pirates.auth.repository.HistoryRepository
-import com.pirates.chat.model.bpe.CommandMessage
-import com.pirates.chat.model.bpe.ResponseDto
-import com.pirates.chat.utils.timestampNowUTC
-import com.pirates.chat.utils.toJson
-import com.pirates.chat.utils.toUUID
+import com.pirates.auth.model.bpe.CommandMessage
+import com.pirates.auth.model.bpe.ResponseDto
+import com.pirates.auth.utils.timestampNowUTC
+import com.pirates.auth.utils.toJson
+import com.pirates.auth.utils.toUUID
 import org.springframework.stereotype.Service
 
 @Service

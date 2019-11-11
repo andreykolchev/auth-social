@@ -3,9 +3,9 @@ package com.pirates.auth.jobworker
 import com.pirates.auth.model.Constants.CONTEXT
 import com.pirates.auth.model.Constants.DATA
 import com.pirates.auth.service.CommandService
-import com.pirates.chat.model.bpe.CommandMessage
-import com.pirates.chat.utils.toJson
-import com.pirates.chat.utils.toObject
+import com.pirates.auth.model.bpe.CommandMessage
+import com.pirates.auth.utils.toJson
+import com.pirates.auth.utils.toObject
 import io.zeebe.client.ZeebeClient
 import io.zeebe.client.api.subscription.JobHandler
 import org.slf4j.LoggerFactory

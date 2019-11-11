@@ -1,9 +1,9 @@
 package com.pirates.auth.service
 
-import com.pirates.chat.model.bpe.CommandMessage
-import com.pirates.chat.model.bpe.CommandType
-import com.pirates.chat.model.bpe.ResponseDto
-import com.pirates.chat.utils.toObject
+import com.pirates.auth.model.bpe.CommandMessage
+import com.pirates.auth.model.bpe.CommandType
+import com.pirates.auth.model.bpe.ResponseDto
+import com.pirates.auth.utils.toObject
 import org.springframework.stereotype.Service
 
 @Service

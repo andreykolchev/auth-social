@@ -1,4 +1,4 @@
-package com.pirates.chat.utils
+package com.pirates.auth.utils
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.DeserializationFeature
@@ -82,13 +82,33 @@ fun timestampNowUTC(): Timestamp {
 }
 
 /*Json utils*/
-
-fun Any.toJson(): String {
+fun String.toJsonNode(): JsonNode {
     try {
-        return JsonMapper.mapper.writeValueAsString(this)
+        return JsonMapper.mapper.readTree(this)
+    } catch (e: IOException) {
+        throw IllegalArgumentException(e)
+    }
+}
+
+fun JsonNode.toObjectNode(): ObjectNode {
+    return this as ObjectNode
+}
+
+fun createObjectNode(): ObjectNode {
+    return JsonMapper.mapper.createObjectNode()
+}
+
+fun <Any> toJson(obj: Any): String {
+    try {
+        return JsonMapper.mapper.writeValueAsString(obj)
     } catch (e: JsonProcessingException) {
         throw RuntimeException(e)
     }
+}
+
+fun <T> toJsonNode(obj: T): JsonNode {
+    Objects.requireNonNull(obj)
+    return JsonMapper.mapper.valueToTree(obj)
 }
 
 fun <T> toObject(clazz: Class<T>, json: String): T {
@@ -106,59 +126,6 @@ fun <T> toObject(clazz: Class<T>, json: JsonNode): T {
         throw IllegalArgumentException(e)
     }
 }
-
-fun String.toJsonNode(): JsonNode {
-    try {
-        return JsonMapper.mapper.readTree(this)
-    } catch (e: IOException) {
-        throw IllegalArgumentException(e)
-    }
-}
-
-fun Any.toJsonNode(): JsonNode {
-    try {
-        return JsonMapper.mapper.valueToTree(this)
-    } catch (e: IOException) {
-        throw IllegalArgumentException(e)
-    }
-}
-
-fun JsonNode.toObjectNode(): ObjectNode {
-    return this as ObjectNode
-}
-
-fun createObjectNode(): ObjectNode {
-    return JsonMapper.mapper.createObjectNode()
-}
-
-//fun <Any> toJson(obj: Any): String {
-//    try {
-//        return JsonMapper.mapper.writeValueAsString(obj)
-//    } catch (e: JsonProcessingException) {
-//        throw RuntimeException(e)
-//    }
-//}
-//
-//fun <T> toJsonNode(obj: T): JsonNode {
-//    Objects.requireNonNull(obj)
-//    return JsonMapper.mapper.valueToTree(obj)
-//}
-//
-//fun <T> toObject(clazz: Class<T>, json: String): T {
-//    try {
-//        return JsonMapper.mapper.readValue(json, clazz)
-//    } catch (e: IOException) {
-//        throw IllegalArgumentException(e)
-//    }
-//}
-//
-//fun <T> toObject(clazz: Class<T>, json: JsonNode): T {
-//    try {
-//        return JsonMapper.mapper.treeToValue(json, clazz)
-//    } catch (e: IOException) {
-//        throw IllegalArgumentException(e)
-//    }
-//}
 
 /*crypto utils*/
 fun String.decodeBase64(): ByteArray {
