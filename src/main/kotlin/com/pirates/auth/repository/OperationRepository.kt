@@ -12,7 +12,7 @@ class OperationRepository(storageConfig: StorageConfig) {
     private val topic: ITopic<String>
 
     init {
-        topic = hazelcastInstance.getTopic("auth-ws-topic")
+        topic = hazelcastInstance.getTopic("auth-topic")
     }
 
     fun publishMessage(message: String) {
