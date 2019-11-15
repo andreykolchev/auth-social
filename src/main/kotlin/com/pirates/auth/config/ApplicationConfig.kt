@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Import
         ServiceConfig::class,
         WebMvcConfig::class,
         StorageConfig::class,
-        ZeebeConfig::class,
         DatabaseConfig::class
 )
 class ApplicationConfig

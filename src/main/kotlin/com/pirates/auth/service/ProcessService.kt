@@ -26,7 +26,7 @@ import org.springframework.web.client.RestTemplate
 class ProcessService(private val userRepository: UserRepository,
                      private val restTemplate: RestTemplate,
                      private val tokenService: TokenService,
-                     private val operationService: OperationService
+                     private val storageService: StorageService
 ) {
 
     @Value("\${process.uDataUrl}")
@@ -131,7 +131,7 @@ class ProcessService(private val userRepository: UserRepository,
                 id = operationId,
                 context = context,
                 data = AuthDataRs(token = token))
-        operationService.sendMessage(toJson(message))
+        storageService.publishMessage(operationId, message.toJson())
         return ResponseDto(id = operationId, data = "ok")
     }
 

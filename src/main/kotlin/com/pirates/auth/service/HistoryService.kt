@@ -22,8 +22,8 @@ class HistoryService(private val historyRepository: HistoryRepository) {
                         operationId = input.id.toUUID(),
                         commandDate = timestampNowUTC(),
                         command = input.command.value(),
-                        inputData = toJson(input),
-                        outputData = toJson(output)
+                        inputData = input.toJson(),
+                        outputData = output.toJson()
                 )
         )
     }

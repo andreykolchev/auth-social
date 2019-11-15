@@ -98,9 +98,10 @@ fun createObjectNode(): ObjectNode {
     return JsonMapper.mapper.createObjectNode()
 }
 
-fun <Any> toJson(obj: Any): String {
+
+fun Any.toJson(): String {
     try {
-        return JsonMapper.mapper.writeValueAsString(obj)
+        return JsonMapper.mapper.writeValueAsString(this)
     } catch (e: JsonProcessingException) {
         throw RuntimeException(e)
     }

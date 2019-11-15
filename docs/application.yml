@@ -12,13 +12,11 @@ cassandra:
   username: cassandra
   password: 49hhjddneznwzq14rcke
 
-zeebe:
-  broker: 127.0.0.1:26500
 
 hazelcast:
   cluster: 127.0.0.1:5701 #134.119.221.14:5431
-#  group: hazelcast-stage
-#  password: s3crEt
+  group: dev #hazelcast-stage
+  password: dev-pass #s3crEt
 
 
 process:

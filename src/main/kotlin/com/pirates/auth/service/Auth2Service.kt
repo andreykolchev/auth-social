@@ -17,11 +17,11 @@ import org.springframework.web.client.RestTemplate
 @EnableConfigurationProperties(Auth2Properties::class)
 class Auth2Service(private val prop: Auth2Properties,
                    private val restTemplate: RestTemplate,
-                   private val operationService: OperationService,
+                   private val storageService: StorageService,
                    private val processService: ProcessService) {
 
     fun getProviderAuthURL(provider: String, operationID: String): String {
-        operationService.check(operationID)
+        storageService.isOperationIdExists(operationID)
         return when (valueOf(provider)) {
             facebook -> "${prop.facebook.authUri}?$CL_ID=${prop.facebook.clientID}&$REDIRECT=${prop.callbackUri}/$provider"
             google -> "${prop.google.authUri}?$CL_ID=${prop.google.clientID}&$RESPONSE_TYPE&$SCOPE=${prop.google.scope}&$REDIRECT=${prop.callbackUri}/$provider"
@@ -29,7 +29,7 @@ class Auth2Service(private val prop: Auth2Properties,
     }
 
     fun processProviderResponse(provider: String, code: String, operationID: String): ResponseDto {
-        operationService.check(operationID)
+        storageService.isOperationIdExists(operationID)
         val userData: JsonNode?
         when (valueOf(provider)) {
             facebook -> {
