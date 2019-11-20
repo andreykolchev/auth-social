@@ -16,15 +16,15 @@ function emailValid() {
 
 form = document.getElementById('form');
 
-form.addEventListener('submit', (event) => {
-
-    event.preventDefault();
-
-    if (emailValid()) {
-        form.submit();
-        return true;
-    } else {
-        event.preventDefault();
-        return false;
-    }
-})
+// form.addEventListener('submit', (event) = > {
+//
+//     event.preventDefault();
+//
+// if (emailValid()) {
+//     form.submit();
+//     return true;
+// } else {
+//     event.preventDefault();
+//     return false;
+// }
+// })

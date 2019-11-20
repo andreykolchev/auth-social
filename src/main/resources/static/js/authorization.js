@@ -47,15 +47,15 @@ function passValid() {
 
 form = document.getElementById('form');
 
-form.addEventListener('submit', (event) => {
-
-    event.preventDefault();
-
-    if (emailValid() && passValid()) {
-        form.submit();
-        return true;
-    } else {
-        event.preventDefault();
-        return false;
-    }
-})
+// form.addEventListener('submit', (event) => {
+//
+//     event.preventDefault();
+//
+//     if (emailValid() && passValid()) {
+//         form.submit();
+//         return true;
+//     } else {
+//         event.preventDefault();
+//         return false;
+//     }
+// })

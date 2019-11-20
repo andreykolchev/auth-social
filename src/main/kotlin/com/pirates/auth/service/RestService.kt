@@ -26,6 +26,10 @@ class RestService(private val ap: AuthProperties,
                   private val restTemplate: RestTemplate
 ) {
 
+    fun getFacebookAuthURL() = "${ap.facebook.authUri}?$CL_ID=${ap.facebook.clientID}&$REDIRECT=${ap.callbackUrl}/facebook"
+
+    fun getGoogleAuthURL() = "${ap.google.authUri}?$CL_ID=${ap.google.clientID}&$RESPONSE_TYPE&$SCOPE=${ap.google.scope}&$REDIRECT=${ap.callbackUrl}/google"
+
     fun getFacebookToken(auth2code: String): String {
         val tokenURL = "${ap.facebook.tokenUri}?$CL_ID=${ap.facebook.clientID}&$CL_SECRET=${ap.facebook.clientSecret}&$REDIRECT=${ap.callbackUrl}/facebook&$CODE=$auth2code"
         val tokenResponse = restTemplate.getForEntity(tokenURL, JsonNode::class.java)

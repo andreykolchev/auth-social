@@ -4,9 +4,9 @@ data class UserEntity(
 
         var providerId: String,
 
-        var personId: String,
-
         var provider: String,
+
+        var personId: String,
 
         var status: String,
 

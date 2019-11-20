@@ -93,15 +93,15 @@ function lastNameValid() {
 
 form = document.getElementById('form');
 
-form.addEventListener('submit', (event) => {
-
-    event.preventDefault();
-
-    if(emailValid() && passValid() && check() && firstNameValid() && lastNameValid()) {
-    form.submit();
-    return true;
-    } else {
-    event.preventDefault();
-    return false;
-    }
-})
+// form.addEventListener('submit', (event) => {
+//
+//     event.preventDefault();
+//
+//     if(emailValid() && passValid() && check() && firstNameValid() && lastNameValid()) {
+//     form.submit();
+//     return true;
+//     } else {
+//     event.preventDefault();
+//     return false;
+//     }
+// })

@@ -116,7 +116,6 @@ class JWTService(private val properties: JWTProperties) {
 
         private const val PROVIDER_ID_CLAIM = "providerID"
         private const val PERSON_ID_CLAIM = "personID"
-        private const val PROFILE_ID_CLAIM = "profileID"
         private const val HEADER_TOKEN_TYPE = "type"
     }
 }

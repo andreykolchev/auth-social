@@ -6,18 +6,12 @@ import java.net.InetSocketAddress.createUnresolved
 
 @ConfigurationProperties(prefix = "cassandra")
 data class CassandraProperties(
-
         var contactPoints: String?,
-
         var keyspaceName: String?,
-
         var port: Int?,
-
         var username: String?,
-
         var password: String?
 ) {
-
     fun getContactPoints(): List<InetSocketAddress> {
         return this.contactPoints!!
                 .split(",".toRegex())

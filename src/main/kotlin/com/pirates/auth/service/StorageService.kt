@@ -19,6 +19,6 @@ class StorageService(storageConfig: StorageConfig) {
     }
 
     fun getProviderIdByCode(code: String): String {
-        return authMap.getValue(code)?: throw ErrorException(ErrorType.INVALID_CODE)
+        return authMap.getValue(code) ?: throw ErrorException(ErrorType.INVALID_CODE)
     }
 }

@@ -6,22 +6,15 @@ import com.pirates.auth.exception.ErrorType
 import com.pirates.auth.model.AuthUser
 import com.pirates.auth.model.Constants
 import com.pirates.auth.model.UserStatus
-import com.pirates.auth.model.bpe.ApiVersion
-import com.pirates.auth.model.bpe.CommandMessage
-import com.pirates.auth.model.bpe.CommandType
-import com.pirates.auth.model.bpe.ResponseDto
 import com.pirates.auth.model.entity.UserEntity
 import com.pirates.auth.repository.UserRepository
-import com.pirates.auth.utils.*
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
+import com.pirates.auth.utils.genUUID
+import com.pirates.auth.utils.hashPassword
 import org.springframework.stereotype.Service
-import org.springframework.web.client.RestTemplate
 
 @Service
 class AuthService(private val routsProperties: RoutsProperties,
-                  private val restTemplate: RestTemplate,
+                  private val restService: RestService,
                   private val userRepository: UserRepository,
                   private val storageService: StorageService
 ) {
@@ -31,40 +24,18 @@ class AuthService(private val routsProperties: RoutsProperties,
         if (userEntity.hashedPassword?.equals(login.password?.hashPassword()) != true) throw ErrorException(ErrorType.INVALID_PASSWORD)
         val code = genUUID()
         storageService.saveProviderIdByCode(code, userEntity.providerId)
-        val redirectUri = "${routsProperties.redirectUrl}?target=${login.target}&code=$code"
-        return redirectUri
+        return "${routsProperties.redirectUrl}?target=${login.target}&code=$code"
     }
 
     fun registration(registration: AuthUser): String {
         //check user password for auth
         val hashedPassword = if (registration.provider == Constants.AUTH_PROVIDER) registration.password?.hashPassword() else null
-        //check user email and personID
-        val registrationResponse = postRegistrationCommand(registration.copy(hashedPassword = hashedPassword))
-        if (registrationResponse.errors != null) {
-            val errorMessage = ResponseDto(id = registrationResponse.id, errors = registrationResponse.errors).toJson()
-            throw ErrorException(ErrorType.INVALID_PASSWORD, errorMessage)
-        }
-        val userResponse = toObject(AuthUser::class.java, toJsonNode(registrationResponse.data!!))
+        val user = registration.copy(hashedPassword = hashedPassword)
+        val userResponse = restService.postRegistrationCommand(user)
         val userEntity = getUserEntity(userResponse)
         userRepository.save(userEntity)
         val code = genUUID()
-        val redirectUri = "${routsProperties.redirectUrl}?target=${registration.target}&code=$code"
-        return redirectUri
-    }
-
-    private fun postRegistrationCommand(user: AuthUser): ResponseDto {
-        val cm = CommandMessage(
-                id = genUUID(),
-                command = CommandType.REGISTRATION,
-                context = toJsonNode(""),
-                data = toJsonNode(user),
-                version = ApiVersion.V_0_0_1
-        )
-        val headers = HttpHeaders()
-        headers.contentType = MediaType.APPLICATION_JSON
-        val request = HttpEntity(cm, headers)
-        val response = restTemplate.postForEntity(routsProperties.redirectUrl, request, ResponseDto::class.java)
-        return response.body ?: throw ErrorException(ErrorType.INVALID_DATA)
+        return "${routsProperties.redirectUrl}?target=${registration.target}&code=$code"
     }
 
     private fun getUserEntity(user: AuthUser): UserEntity {

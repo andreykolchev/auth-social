@@ -7,15 +7,14 @@ import com.pirates.auth.model.Constants.AUTH_PROVIDER
 import com.pirates.auth.model.Constants.FIRST_NAME
 import com.pirates.auth.model.Constants.LAST_NAME
 import com.pirates.auth.model.Constants.LOGIN
-import com.pirates.auth.model.Constants.TARGET
 import com.pirates.auth.model.Constants.PASSWORD
-import com.pirates.auth.service.AuthService
+import com.pirates.auth.model.Constants.TARGET
 import com.pirates.auth.model.bpe.ResponseDto
 import com.pirates.auth.model.bpe.getEnumExceptionResponseDto
 import com.pirates.auth.model.bpe.getErrorExceptionResponseDto
 import com.pirates.auth.model.bpe.getExceptionResponseDto
+import com.pirates.auth.service.AuthService
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
@@ -39,7 +38,7 @@ class AuthController(private val authService: AuthService) {
     }
 
     @PostMapping("/registration/{$TARGET}")
-    fun registration(@PathVariable(TARGET) target: String, req: HttpServletRequest, res: HttpServletResponse){
+    fun registration(@PathVariable(TARGET) target: String, req: HttpServletRequest, res: HttpServletResponse) {
         val user = AuthUser(
                 provider = AUTH_PROVIDER,
                 providerId = req.getParameter(LOGIN),

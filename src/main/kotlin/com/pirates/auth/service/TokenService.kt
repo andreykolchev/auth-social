@@ -31,6 +31,6 @@ class TokenService(private val userRepository: UserRepository,
 
     fun verification(accessToken: String) {
         val decodedJWT = jwtService.decodeJWT(accessToken)
-       jwtService.verification(decodedJWT, TokenType.ACCESS)
+        jwtService.verification(decodedJWT, TokenType.ACCESS)
     }
 }
