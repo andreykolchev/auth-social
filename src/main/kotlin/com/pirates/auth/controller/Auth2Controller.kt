@@ -3,7 +3,7 @@ package com.pirates.auth.controller
 import com.pirates.auth.exception.EnumException
 import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.model.Constants.CODE
-import com.pirates.auth.model.Constants.OPERATION_ID
+import com.pirates.auth.model.Constants.TARGET
 import com.pirates.auth.model.Constants.PROVIDER
 import com.pirates.auth.service.Auth2Service
 import com.pirates.auth.model.bpe.ResponseDto
@@ -22,14 +22,14 @@ import javax.servlet.http.HttpServletResponse
 @RequestMapping("/oauth2")
 class Auth2Controller(private val auth2Service: Auth2Service) {
 
-    @GetMapping("/login/{$PROVIDER}/{$OPERATION_ID}")
+    @GetMapping("/login/{$PROVIDER}/{$TARGET}")
     fun login(@PathVariable(PROVIDER) provider: String,
-              @PathVariable(OPERATION_ID) operationID: String,
+              @PathVariable(TARGET) target: String,
               req: HttpServletRequest,
               res: HttpServletResponse) {
-        //set operationID to session
-        req.session.setAttribute(OPERATION_ID, operationID)
-        res.sendRedirect(auth2Service.getProviderAuthURL(provider, operationID))
+        //set target to session
+        req.session.setAttribute(TARGET, target)
+        res.sendRedirect(auth2Service.getProviderAuthURL(provider, target))
     }
 
     @GetMapping("/callback/{$PROVIDER}")
@@ -37,9 +37,9 @@ class Auth2Controller(private val auth2Service: Auth2Service) {
                  req: HttpServletRequest): ResponseEntity<ResponseDto> {
         //get code from provider redirect
         val code = req.getParameter(CODE)
-        //get operationID from session
-        val operationID = req.session.getAttribute(OPERATION_ID).toString()
-        return ResponseEntity(auth2Service.processProviderResponse(provider, code, operationID), HttpStatus.OK)
+        //get target from session
+        val target = req.session.getAttribute(TARGET).toString()
+        return ResponseEntity(auth2Service.processProviderResponse(provider, code, target), HttpStatus.OK)
     }
 
     @ResponseBody

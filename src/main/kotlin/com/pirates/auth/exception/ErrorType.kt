@@ -10,7 +10,7 @@ enum class ErrorType constructor(val code: String, val message: String) {
     TOKEN_VERIFICATION_ERROR("00.06", "Error of verification the token."),
     INVALID_TOKEN_TYPE("00.07", "Invalid token type."),
     TOKEN_EXPIRED("00.08", "The token is expired."),
-    INVALID_OPERATION_ID("00.09", "Invalid operation id."),
+    INVALID_CODE("00.09", "Invalid code."),
     INVALID_PASSWORD("00.10", "Invalid password."),
     INVALID_DATA("00.11", "Invalid data."),
     EMAIL_ALREADY_EXISTS("00.12", "Email already exists."),

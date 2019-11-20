@@ -8,7 +8,7 @@
     <title>Crossmarket</title>
 </head>
 <body>
-<div style="display:none;">${operationID}</div>
+<div style="display:none;">${target}</div>
 <div class="container">
     <div class="registr__header">
         <div class="registr__logo">
@@ -22,7 +22,7 @@
         <div class="registr__info">
             <div class="registr__info-text">Already have an account?</div>
             <div class="registr__info-button">
-                <a class="info-link" th:href="@{/interaction/{operationID}(operationID=${operationID})}">Sign in</a>
+                <a class="info-link" th:href="@{/{target}(target=${target})}">Sign in</a>
             </div>
         </div>
     </div>
@@ -33,14 +33,14 @@
         <span class="login_with">Login with:</span>
         <div class="login_with_btn_block">
             <button class="facebook_btn"
-                    th:onclick="@{window.location.href='/oauth2/login/facebook/{operationID}'(operationID=${operationID})}">
+                    th:onclick="@{window.location.href='/oauth2/login/facebook/{target}'(target=${target})}">
                 <img
                         src="/static/img/facebook_button.svg"><span>Log in With Facebook</span></button>
             <button class="google_btn"
-                    th:onclick="@{window.location.href='/oauth2/login/google/{operationID}'(operationID=${operationID})}">
+                    th:onclick="@{window.location.href='/oauth2/login/google/{target}'(target=${target})}">
                 <img
                         src="/static/img/google+_button.svg"><span>Sign in with Google</span>
-            </button>            <!--<a href="/interaction/login/eds">-->
+            </button>            <!--<a href="/login/eds">-->
             <!--<button  class="ecp_btn"><img src="/static/img/eds_button.svg"><span>Log in With eds</span></button>-->
             <!--</a>-->
 
@@ -51,7 +51,7 @@
             <span class="lines-sides">or sign up with</span>
         </div>
         <div class="registr__form">
-            <form class="form-container" id="form" method="post" name="form" th:action="@{'/oauth/registration/{operationID}'(operationID=${operationID})}">
+            <form class="form-container" id="form" method="post" name="form" th:action="@{'/oauth/registration/{target}'(target=${target})}">
                 <!--                <input name="uuid" type="hidden" value="<%= details.uuid %>"/>-->
                 <!--                <input name="type" type="hidden" value="email"/>-->
                 <div class="form__item">

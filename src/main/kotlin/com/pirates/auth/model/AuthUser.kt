@@ -7,7 +7,7 @@ import java.util.*
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class AuthUser @JsonCreator constructor(
 
-        var operationId: String,
+        var target: String,
 
         var provider: String,
 

@@ -5,11 +5,10 @@ import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.TokenExpiredException
 import com.auth0.jwt.interfaces.DecodedJWT
-import com.pirates.auth.config.properties.RSAKeyProperties
+import com.pirates.auth.config.properties.JWTProperties
 import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.exception.ErrorType
 import com.pirates.auth.utils.decodeBase64
-import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service
 import java.security.KeyFactory
 import java.security.interfaces.RSAPrivateKey
@@ -19,24 +18,33 @@ import java.security.spec.X509EncodedKeySpec
 import java.util.*
 
 @Service
-@EnableConfigurationProperties(RSAKeyProperties::class)
-class JWTService(rsaKeyProperties: RSAKeyProperties) {
+class JWTService(private val properties: JWTProperties) {
 
     private val algorithm: Algorithm
     private val verifier: JWTVerifier
 
     init {
-        algorithm = Algorithm.RSA256(getPublicKey(rsaKeyProperties.publicKey), getPrivateKey(rsaKeyProperties.privateKey))
+        algorithm = Algorithm.RSA256(getPublicKey(properties.publicKey), getPrivateKey(properties.privateKey))
         verifier = JWT.require(algorithm).build()
     }
 
-    fun genToken(claims: Map<String, Any>, header: Map<String, Any>, expiresOn: Date): String {
+    fun genAccessToken(claims: Map<String, Any>, header: Map<String, Any>): String {
         return JWT.create()
                 .also { jwt ->
                     claims.forEach { (key, value) -> jwt.withClaim(key, value.toString()) }
                 }
                 .withHeader(header)
-                .withExpiresAt(expiresOn)
+                .withExpiresAt(Date(System.currentTimeMillis() + 1000 * properties.lifeTime.access))
+                .sign(algorithm)
+    }
+
+    fun genRefreshToken(claims: Map<String, Any>, header: Map<String, Any>): String {
+        return JWT.create()
+                .also { jwt ->
+                    claims.forEach { (key, value) -> jwt.withClaim(key, value.toString()) }
+                }
+                .withHeader(header)
+                .withExpiresAt(Date(System.currentTimeMillis() + 1000 * properties.lifeTime.refresh))
                 .sign(algorithm)
     }
 

@@ -1,7 +1,7 @@
 package com.pirates.auth.service
 
 import com.hazelcast.core.HazelcastInstance
-import com.hazelcast.core.ITopic
+import com.hazelcast.core.IMap
 import com.pirates.auth.config.StorageConfig
 import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.exception.ErrorType
@@ -12,28 +12,13 @@ import java.util.concurrent.TimeUnit
 class StorageService(storageConfig: StorageConfig) {
 
     private val hazelcastInstance: HazelcastInstance = storageConfig.hazelcastInstance()
-    private val authTopic: ITopic<String>
-    private val syncTopic: ITopic<String>
+    val authMap: IMap<String, String> = hazelcastInstance.getMap("auth-map")
 
-    init {
-        authTopic = hazelcastInstance.getTopic("auth-topic")
-        syncTopic = hazelcastInstance.getTopic("sync-response-topic")
+    fun saveProviderIdByCode(code: String, providerId: String) {
+        authMap.put(code, providerId, 10, TimeUnit.SECONDS)
     }
 
-    fun publishMessage(operationId: String, message: String) {
-        val map = hazelcastInstance.getMap<String, String>("auth-map")
-        map.put(operationId, message, 10, TimeUnit.SECONDS)
-        authTopic.publish(operationId)
+    fun getProviderIdByCode(code: String): String {
+        return authMap.getValue(code)?: throw ErrorException(ErrorType.INVALID_CODE)
     }
-
-    fun isOperationIdExists(operationID: String) {
-        val key = "${REDIS_AUTH_KEY}_$operationID"
-        val map = hazelcastInstance.getMap<String, String>("client-operation")
-        if (map.getValue(key) == null) throw ErrorException(ErrorType.INVALID_OPERATION_ID)
-    }
-
-    companion object {
-        private const val REDIS_AUTH_KEY = "auth"
-    }
-
 }

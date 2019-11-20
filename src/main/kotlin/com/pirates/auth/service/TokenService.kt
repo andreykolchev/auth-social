@@ -5,15 +5,25 @@ import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.exception.ErrorType
 import com.pirates.auth.model.TokenType
 import com.pirates.auth.model.entity.UserEntity
+import com.pirates.auth.repository.UserRepository
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-@EnableConfigurationProperties(JWTProperties::class)
-class TokenService(private val jwtProperties: JWTProperties,
+class TokenService(private val userRepository: UserRepository,
                    private val jwtService: JWTService) {
 
+
+    fun getTokenByCode(code: String): String {
+        val userEntity = userRepository.getByProviderId(providerId = login.providerId, provider = login.provider)
+                ?: throw ErrorException(ErrorType.INVALID_EMAIL)
+        val accessToken = jwtService.genToken(
+                claims = mapOf<String, Any>(PERSON_ID_CLAIM to userEntity.personId, PROFILE_ID_CLAIM to userEntity.profileId),
+                header = mapOf<String, Any>(HEADER_TOKEN_TYPE to TokenType.ACCESS.toString()),
+                expiresOn = Date(System.currentTimeMillis() + 1000 * jwtProperties.accessLifeTime)
+        )
+    }
 
     fun getTokenByUserCredentials(userEntity: UserEntity): String {
         return jwtService.genToken(

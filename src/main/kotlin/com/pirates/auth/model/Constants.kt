@@ -7,7 +7,7 @@ object Constants {
     const val AUTH_PROVIDER = "auth"
     const val PERSON_ID = "personID"
     const val PROFILE_ID = "profileID"
-    const val OPERATION_ID = "operationID"
+    const val TARGET = "target"
     const val CODE = "code"
     const val LOGIN = "login"
     const val PASSWORD = "password"

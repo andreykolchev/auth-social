@@ -21,7 +21,7 @@
         <div class="registr__info">
             <div class="registr__info-text">Don't have an account?</div>
             <div class="registr__info-button">
-                <a class="info-link" th:href="@{/interaction/registration/{operationID}(operationID=${operationID})}">Get
+                <a class="info-link" th:href="@{/registration/{target}(target=${target})}">Get
                     started</a>
             </div>
         </div>
@@ -34,15 +34,15 @@
             <span class="login_with">Login with:</span>
             <div class="login_with_btn_block">
                 <button class="facebook_btn"
-                        th:onclick="@{window.location.href='/oauth2/login/facebook/{operationID}'(operationID=${operationID})}">
+                        th:onclick="@{window.location.href='/oauth2/login/facebook/{target}'(target=${target})}">
                     <img
                             src="/static/img/facebook_button.svg"><span>Log in With Facebook</span></button>
                 <button class="google_btn"
-                        th:onclick="@{window.location.href='/oauth2/login/google/{operationID}'(operationID=${operationID})}">
+                        th:onclick="@{window.location.href='/oauth2/login/google/{target}'(target=${target})}">
                     <img
                             src="/static/img/google+_button.svg"><span>Sign in with Google</span>
                 </button>
-                <!--<a href="/interaction/login/eds">-->
+                <!--<a href="/login/eds">-->
                 <!--<button  class="ecp_btn"><img src="/static/img/eds_button.svg"><span>Log in With eds</span></button>-->
                 <!--</a>-->
                 <button class="ecp_btn"><img src="/static/img/eds_button.svg"><span>EDS soon...</span></button>
@@ -50,7 +50,7 @@
 
             <span class="lines-sides">or</span>
             <div class="input_block">
-                <form class="form" id="form" method="post" th:action="@{'/oauth/login/{operationID}'(operationID=${operationID})}">
+                <form class="form" id="form" method="post" th:action="@{'/oauth/login/{target}'(target=${target})}">
                     <!--                    <input name="uuid" type="hidden" value="<%= details.uuid %>"/>-->
                     <div class="form__field">
                         <div class="form__field__title">
@@ -63,7 +63,7 @@
                     <div class="form__field">
                         <div class="form__field__title">
                             <span>Password:</span>
-                            <a th:href="@{/interaction/forgot-password/{operationID}(operationID=${operationID})}">Forgot
+                            <a th:href="@{/forgot-password/{target}(target=${target})}">Forgot
                                 the password?</a>
                         </div>
                         <div class="input_password">

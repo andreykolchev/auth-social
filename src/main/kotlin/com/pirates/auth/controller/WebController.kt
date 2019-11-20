@@ -1,6 +1,6 @@
 package com.pirates.auth.controller
 
-import com.pirates.auth.model.Constants.OPERATION_ID
+import com.pirates.auth.model.Constants.TARGET
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -8,30 +8,30 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
-@RequestMapping("/interaction")
+@RequestMapping("/")
 class WebController {
 
-    @GetMapping("/{$OPERATION_ID}")
-    fun getIndex(@PathVariable(OPERATION_ID) operationID: String, model: Model): String {
-        model.addAttribute(OPERATION_ID, operationID)
+    @GetMapping("/{$TARGET}")
+    fun getIndex(@PathVariable(TARGET) target: String, model: Model): String {
+        model.addAttribute(TARGET, target)
         return "index"
     }
 
-    @GetMapping("/registration/{$OPERATION_ID}")
-    fun getRegistration(@PathVariable(OPERATION_ID) operationID: String, model: Model): String {
-        model.addAttribute(OPERATION_ID, operationID)
+    @GetMapping("/registration/{$TARGET}")
+    fun getRegistration(@PathVariable(TARGET) target: String, model: Model): String {
+        model.addAttribute(TARGET, target)
         return "registration"
     }
 
-    @GetMapping("/forgot-password/{$OPERATION_ID}")
-    fun getForgotPassword(@PathVariable(OPERATION_ID) operationID: String, model: Model): String {
-        model.addAttribute(OPERATION_ID, operationID)
+    @GetMapping("/forgot-password/{$TARGET}")
+    fun getForgotPassword(@PathVariable(TARGET) target: String, model: Model): String {
+        model.addAttribute(TARGET, target)
         return "forgot-password"
     }
 
-    @GetMapping("/success-new-pwd/{$OPERATION_ID}")
-    fun getSuccessNewPwd(@PathVariable(OPERATION_ID) operationID: String, model: Model): String {
-        model.addAttribute(OPERATION_ID, operationID)
+    @GetMapping("/success-new-pwd/{$TARGET}")
+    fun getSuccessNewPwd(@PathVariable(TARGET) target: String, model: Model): String {
+        model.addAttribute(TARGET, target)
         return "success-new-pwd"
     }
 }

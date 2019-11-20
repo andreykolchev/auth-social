@@ -7,7 +7,7 @@ import com.pirates.auth.model.Constants.AUTH_PROVIDER
 import com.pirates.auth.model.Constants.FIRST_NAME
 import com.pirates.auth.model.Constants.LAST_NAME
 import com.pirates.auth.model.Constants.LOGIN
-import com.pirates.auth.model.Constants.OPERATION_ID
+import com.pirates.auth.model.Constants.TARGET
 import com.pirates.auth.model.Constants.PASSWORD
 import com.pirates.auth.service.AuthService
 import com.pirates.auth.model.bpe.ResponseDto
@@ -19,35 +19,36 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @Controller
 @RequestMapping("/oauth")
 class AuthController(private val authService: AuthService) {
 
-    @PostMapping("/login/{$OPERATION_ID}")
-    fun login(@PathVariable(OPERATION_ID) operationID: String, req: HttpServletRequest): ResponseEntity<ResponseDto> {
+    @PostMapping("/login/{$TARGET}")
+    fun login(@PathVariable(TARGET) target: String, req: HttpServletRequest, res: HttpServletResponse) {
         val user = AuthUser(
                 provider = AUTH_PROVIDER,
                 providerId = req.getParameter(LOGIN),
                 email = req.getParameter(LOGIN),
                 password = req.getParameter(PASSWORD),
-                operationId = operationID,
+                target = target,
                 name = ""
         )
-        return ResponseEntity(authService.login(user), HttpStatus.OK)
+        res.sendRedirect(authService.login(user))
     }
 
-    @PostMapping("/registration/{$OPERATION_ID}")
-    fun registration(@PathVariable(OPERATION_ID) operationID: String, req: HttpServletRequest): ResponseEntity<ResponseDto> {
+    @PostMapping("/registration/{$TARGET}")
+    fun registration(@PathVariable(TARGET) target: String, req: HttpServletRequest, res: HttpServletResponse){
         val user = AuthUser(
                 provider = AUTH_PROVIDER,
                 providerId = req.getParameter(LOGIN),
                 email = req.getParameter(LOGIN),
                 password = req.getParameter(PASSWORD),
                 name = (req.getParameter(FIRST_NAME) + " " + req.getParameter(LAST_NAME)).trim(),
-                operationId = operationID
+                target = target
         )
-        return ResponseEntity(authService.registration(user), HttpStatus.OK)
+        res.sendRedirect(authService.registration(user))
     }
 
     @ResponseBody

@@ -51,6 +51,9 @@ private object JsonMapper {
     }
 }
 
+fun genUUID(): String {
+    return UUID.randomUUID().toString()
+}
 
 fun String.toUUID(): UUID {
     return UUID.fromString(this)
