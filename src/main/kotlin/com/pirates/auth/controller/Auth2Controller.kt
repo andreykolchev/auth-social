@@ -3,15 +3,14 @@ package com.pirates.auth.controller
 import com.pirates.auth.exception.EnumException
 import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.model.Constants.CODE
-import com.pirates.auth.model.Constants.TARGET
 import com.pirates.auth.model.Constants.PROVIDER
-import com.pirates.auth.service.Auth2Service
+import com.pirates.auth.model.Constants.TARGET
 import com.pirates.auth.model.bpe.ResponseDto
 import com.pirates.auth.model.bpe.getEnumExceptionResponseDto
 import com.pirates.auth.model.bpe.getErrorExceptionResponseDto
 import com.pirates.auth.model.bpe.getExceptionResponseDto
+import com.pirates.auth.service.Auth2Service
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
@@ -29,17 +28,18 @@ class Auth2Controller(private val auth2Service: Auth2Service) {
               res: HttpServletResponse) {
         //set target to session
         req.session.setAttribute(TARGET, target)
-        res.sendRedirect(auth2Service.getProviderAuthURL(provider, target))
+        res.sendRedirect(auth2Service.getProviderAuthURL(provider))
     }
 
     @GetMapping("/callback/{$PROVIDER}")
     fun callback(@PathVariable(PROVIDER) provider: String,
-                 req: HttpServletRequest): ResponseEntity<ResponseDto> {
+                 req: HttpServletRequest,
+                 res: HttpServletResponse) {
         //get code from provider redirect
-        val code = req.getParameter(CODE)
+        val auth2code = req.getParameter(CODE)
         //get target from session
         val target = req.session.getAttribute(TARGET).toString()
-        return ResponseEntity(auth2Service.processProviderResponse(provider, code, target), HttpStatus.OK)
+        res.sendRedirect(auth2Service.processProviderResponse(provider, auth2code, target))
     }
 
     @ResponseBody

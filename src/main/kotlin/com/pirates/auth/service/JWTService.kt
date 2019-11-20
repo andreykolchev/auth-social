@@ -8,6 +8,9 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import com.pirates.auth.config.properties.JWTProperties
 import com.pirates.auth.exception.ErrorException
 import com.pirates.auth.exception.ErrorType
+import com.pirates.auth.model.AuthTokens
+import com.pirates.auth.model.TokenType
+import com.pirates.auth.model.entity.UserEntity
 import com.pirates.auth.utils.decodeBase64
 import org.springframework.stereotype.Service
 import java.security.KeyFactory
@@ -28,24 +31,29 @@ class JWTService(private val properties: JWTProperties) {
         verifier = JWT.require(algorithm).build()
     }
 
-    fun genAccessToken(claims: Map<String, Any>, header: Map<String, Any>): String {
-        return JWT.create()
-                .also { jwt ->
-                    claims.forEach { (key, value) -> jwt.withClaim(key, value.toString()) }
-                }
-                .withHeader(header)
+    fun genTokens(userEntity: UserEntity): AuthTokens {
+        val accessToken = JWT.create()
+                .withClaim(PROVIDER_ID_CLAIM, userEntity.providerId)
+                .withClaim(PERSON_ID_CLAIM, userEntity.personId)
+                .withHeader(mapOf<String, Any>(HEADER_TOKEN_TYPE to TokenType.ACCESS.toString()))
                 .withExpiresAt(Date(System.currentTimeMillis() + 1000 * properties.lifeTime.access))
                 .sign(algorithm)
-    }
-
-    fun genRefreshToken(claims: Map<String, Any>, header: Map<String, Any>): String {
-        return JWT.create()
-                .also { jwt ->
-                    claims.forEach { (key, value) -> jwt.withClaim(key, value.toString()) }
-                }
-                .withHeader(header)
+        val refreshToken = JWT.create()
+                .withClaim(PROVIDER_ID_CLAIM, userEntity.providerId)
+                .withClaim(PERSON_ID_CLAIM, userEntity.personId)
+                .withHeader(mapOf<String, Any>(HEADER_TOKEN_TYPE to TokenType.REFRESH.toString()))
                 .withExpiresAt(Date(System.currentTimeMillis() + 1000 * properties.lifeTime.refresh))
                 .sign(algorithm)
+        return AuthTokens(accessToken = accessToken, refreshToken = refreshToken)
+    }
+
+    fun verification(decodedJWT: DecodedJWT, tokenType: TokenType) {
+        val valueTokenTypeHeader = decodedJWT.getHeaderClaim(HEADER_TOKEN_TYPE).asString()
+        if (tokenType.toString() != valueTokenTypeHeader) throw ErrorException(ErrorType.INVALID_TOKEN_TYPE)
+    }
+
+    fun getProviderId(decodedJWT: DecodedJWT): String {
+        return decodedJWT.getClaim(PROVIDER_ID_CLAIM).asString()
     }
 
     fun decodeJWT(encodedJWT: String): DecodedJWT {
@@ -105,5 +113,10 @@ class JWTService(private val properties: JWTProperties) {
         private const val BEGIN_PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----"
         private const val END_PRIVATE_KEY = "-----END PRIVATE KEY-----"
         private const val NEW_LINE_PATTERN = "[\r\n]"
+
+        private const val PROVIDER_ID_CLAIM = "providerID"
+        private const val PERSON_ID_CLAIM = "personID"
+        private const val PROFILE_ID_CLAIM = "profileID"
+        private const val HEADER_TOKEN_TYPE = "type"
     }
 }

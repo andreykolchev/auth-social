@@ -20,8 +20,14 @@ import org.springframework.web.bind.annotation.*
 class TokenController(private val tokenService: TokenService) {
 
     @GetMapping("/{$CODE}")
-    fun getToken(@PathVariable(CODE) code: String): ResponseEntity<String> {
-        return ResponseEntity(tokenService.getTokenByCode(code), HttpStatus.OK)
+    fun get(@PathVariable(CODE) code: String): ResponseEntity<String> {
+        return ResponseEntity(tokenService.getTokensByCode(code), HttpStatus.OK)
+    }
+
+    @GetMapping(value = ["/refresh"])
+    fun refresh(@RequestHeader(AUTHORIZATION_HEADER) header: String): ResponseEntity<String> {
+        val refreshToken = header.substring(AUTH_SCHEMA.length)
+        return ResponseEntity(tokenService.getTokensByRefreshToken(refreshToken), HttpStatus.OK)
     }
 
     @GetMapping("/verification")

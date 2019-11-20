@@ -6,8 +6,6 @@ data class UserEntity(
 
         var personId: String,
 
-        var profileId: String,
-
         var provider: String,
 
         var status: String,

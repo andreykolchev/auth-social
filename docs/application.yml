@@ -17,10 +17,11 @@ hazelcast:
   group: dev #hazelcast-stage
   password: dev-pass #s3crEt
 
-process:
+routs:
   starterUrl: http://localhost:8082/command
+  redirectUrl: https://stage.spa.cross-market.com/
 
-oauth2:
+oauth:
   facebook:
     clientId: 397497430848027
     clientSecret: 021041145fb93a07b233bc75d8c9d3c0
@@ -34,8 +35,7 @@ oauth2:
     tokenUri: https://www.googleapis.com/oauth2/v4/token
     userInfoUri: https://www.googleapis.com/userinfo/v2/me?fields=id,name,email
     scope: https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile
-  callbackUri: http://localhost:8083/oauth2/callback
-  redirectUri: https://stage.spa.cross-market.com/
+  callbackUrl: http://localhost:8083/oauth2/callback
 
 jwt:
   publicKey: |

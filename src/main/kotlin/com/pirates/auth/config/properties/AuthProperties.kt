@@ -2,13 +2,11 @@ package com.pirates.auth.config.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
-@ConfigurationProperties(prefix = "oauth2")
-data class Auth2Properties(
-        var ws: Boolean = false,
+@ConfigurationProperties(prefix = "oauth")
+data class AuthProperties(
         var facebook: Facebook = Facebook(),
         var google: Google = Google(),
-        var callbackUri: String = "",
-        var redirectUri: String = ""
+        var callbackUrl: String = ""
 )
 
 data class Facebook(
