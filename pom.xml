@@ -32,9 +32,6 @@
         <jwt.version>3.4.1</jwt.version>
         <!--cassandra-->
         <cassandra-driver.version>3.7.1</cassandra-driver.version>
-        <!--Zeebe client-->
-        <zeebe.version>0.18.0</zeebe.version>
-        <guava.version>24.1.1-jre</guava.version>
         <!--hazelcast-->
         <hazelcast.version>3.11</hazelcast.version>
         <!--Docker-->
@@ -95,17 +92,6 @@
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast-client</artifactId>
             <version>${hazelcast.version}</version>
-        </dependency>
-        <!--zeebe-->
-        <dependency>
-            <groupId>io.zeebe</groupId>
-            <artifactId>zeebe-client-java</artifactId>
-            <version>${zeebe.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
         </dependency>
         <!--Kotlin-->
         <dependency>
