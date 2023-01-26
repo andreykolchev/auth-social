@@ -1,2 +1,0 @@
-
--Xms128m -Xmx128m -Dspring.config.location=file:/home/user/IdeaProject/CROSSMARKET/auth-social/docs/application.yml
